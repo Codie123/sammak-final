@@ -1,0 +1,35 @@
+/* PaymentFailedPage.css */
+.payment-failed-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    text-align: center;
+  }
+  
+  .error-icon {
+    font-size: 4rem;
+    color: #ff6347;
+    /* Coral color */
+  }
+  
+  .payment-failed-container h1 {
+    font-family: Arial, sans-serif;
+  }
+  
+  .payment-failed-container p {
+    font-family: Arial, sans-serif;
+    /* Use a commonly available sans-serif font for smoother rendering */
+    font-size: 1.5rem;
+    /* Adjust font size as needed */
+    margin-bottom: 10px;
+    font-weight: 400;
+    /* Use a lighter font-weight for smoother appearance */
+    text-rendering: optimizeLegibility;
+    /* Enhance font rendering */
+    -webkit-font-smoothing: antialiased;
+    /* Apply anti-aliasing for smoother edges on webkit browsers */
+    -moz-osx-font-smoothing: grayscale;
+    /* Apply anti-aliasing for smoother edges on macOS */
+  }

@@ -1,0 +1,40 @@
+.topProductContainer {
+    margin-top: 10vh;
+    display: flex;
+    gap: 3vh;
+    flex-wrap: wrap;
+    position: relative;
+   
+
+}
+
+.productContainer:hover {
+    scale: 1.05;
+}
+
+.productContainer:active {
+    scale: 1;
+}
+
+.productContainer {
+    height: 50vh;
+    width: 18vw;
+    border-radius: 20px;
+    transition: 0.15s;
+    cursor: pointer;
+    box-shadow: 0 0 10px 3px rgb(163, 209, 248);
+}
+
+.productContainer>img {
+    border-radius: 10px;
+    height: 40vh;
+}
+
+.home_loader {
+    position: relative;
+    top: 30vh;
+}
+
+.beforeload {
+    height: 80vh;
+}
