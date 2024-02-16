@@ -216,51 +216,7 @@ window.Panda = {};
       ? element.getElementsByClassName(className)
       : document.getElementsByClassName(className);
   };
-  Panda.setCookie = function (name, value, exdays) {
-    var date = new Date();
-    date.setTime(date.getTime() + exdays * 24 * 60 * 60 * 1000);
-    document.cookie =
-      name + "=" + value + ";expires=" + date.toUTCString() + ";path=/";
-  };
-  Panda.getCookie = function (name) {
-    var n = name + "=";
-    var ca = document.cookie.split(";");
-    for (var i = 0; i < ca.length; ++i) {
-      var c = ca[i];
-      while (c.charAt(0) == " ") {
-        c = c.substring(1);
-      }
-      if (c.indexOf(n) == 0) {
-        return c.substring(n.length, c.length);
-      }
-    }
-    return "";
-  };
-  Panda.parseOptions = function (options) {
-    return "string" == typeof options
-      ? JSON.parse(options.replace(/'/g, '"').replace(";", ""))
-      : {};
-  };
-  Panda.parseTemplate = function (template, vars) {
-    return template.replace(/\{\{(\w+)\}\}/g, function () {
-      return vars[arguments[1]];
-    });
-  };
-  Panda.isOnScreen = function (el, dx, dy) {
-    var a = window.pageXOffset,
-      b = window.pageYOffset,
-      o = el.getBoundingClientRect(),
-      x = o.left + a,
-      y = o.top + b,
-      ax = typeof dx == "undefined" ? 0 : dx,
-      ay = typeof dy == "undefined" ? 0 : dy;
-    return (
-      y + o.height + ay >= b &&
-      y <= b + window.innerHeight + ay &&
-      x + o.width + ax >= a &&
-      x <= a + window.innerWidth + ax
-    );
-  };
+
   Panda.doLoading = function (selector, type) {
     var $selector = Panda.$(selector);
     if (typeof type == "undefined") {
