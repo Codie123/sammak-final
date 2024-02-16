@@ -6,13 +6,33 @@ import { useNavigate } from "react-router-dom";
 import Loader from "react-js-loader";
 import style from "./Heroshop.module.css";
 import "../../main.js";
-import { CCard, CCardBody, CCardImage, CCardSubtitle, CCardTitle, CCol, CRow } from '@coreui/react'
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import {
+  CCard,
+  CCardBody,
+  CCardImage,
+  CCardSubtitle,
+  CCardTitle,
+  CCol,
+  CRow,
+} from "@coreui/react";
 function Heroshop() {
   const [data, setdata] = useState("");
+  const [addCartLogin, setaddCartLogin] = useState(false);
+
+  //paginaton
+  const itemsPerPage = 5;
+  const [currentPage, setCurrentPage] = useState(1);
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+  //pagination ends
   const {
     id,
+    isloggedin,
     setid,
     cart,
     setcart,
@@ -20,18 +40,17 @@ function Heroshop() {
     setproductinfo,
     search,
     setsearch,
-    isloggedin
-
   } = useContext(AllContext);
+
+  const navigate = useNavigate();
   const token = localStorage.getItem("token");
+
   const config = {
     headers: {
-      Accept: "/",
+      Accept: "*/*",
       Authorization: `Bearer ` + token,
     },
   };
-  const navigate = useNavigate();
-
   useEffect(() => {
     axios
       .get(`${import.meta.env.VITE_URL}/Product/post`)
@@ -117,7 +136,7 @@ function Heroshop() {
       {/* page content static container */}
       <div className="page-content mb-10 shop-page shop-horizontal">
         <div className="container">
-          <CRow xs={{ cols: 1 }}  className="g-4">
+          <CRow xs={{ cols: 1 }} className="g-4">
             {/* Product 1 */}
             {data.length === 0 && (
               <div className={style.beforeload}>
@@ -136,48 +155,64 @@ function Heroshop() {
             {data.length > 0 &&
               Array.isArray(data) &&
               data.map((field, index) => (
-                <CCol className="col  col-md-6 col-lg-4 col-xl-3" key={index} >
+                <CCol className="col  col-md-6 col-lg-4 col-xl-3" key={index}>
                   <CCard className="">
-                  <div className="card-img-container" onClick={ () => {
-                          setid(field.id);
-                          localStorage.setItem("id", field.id);
-                          onCart(); }}>
+                    <div
+                      className="card-img-container"
+                      onClick={() => {
+                        setid(field.id);
+                        localStorage.setItem("id", field.id);
+                        onCart();
+                      }}
+                    >
+                      <CCardImage
+                        src={
+                          field.images.length > 0
+                            ? field.images[0].imageUrl
+                            : ""
+                        }
+                      />
+                    </div>
 
-                  <CCardImage   src={field.images.length > 0 ? field.images[0].imageUrl : ""} />
-                  </div>   
-                 
                     <CCardBody>
                       <div className="ratings-container">
                         <div className="d-flex align-items-center">
                           <div className="ratings-full">
-                              <span className="ratings" style={{ width: "60%" }}></span>
-                              <span className="tooltiptext tooltip-top">3.00</span>
+                            <span
+                              className="ratings"
+                              style={{ width: "60%" }}
+                            ></span>
+                            <span className="tooltiptext tooltip-top">
+                              3.00
+                            </span>
                           </div>
-                          <a className="rating-reviews" >({Math.floor(Math.random() * 20 + 5)})</a>
+                          <a className="rating-reviews">
+                            ({Math.floor(Math.random() * 20 + 5)})
+                          </a>
                         </div>
                         <span className="product-price">
                           <del className="old-price">
-                            SAR {field.originalPrice} 
+                            SAR {field.originalPrice}
                           </del>
                           <ins
                             className="new-price"
                             style={{ fontWeight: "bold" }}
                           >
-                            SAR {field.sellingPrice} 
+                            SAR {field.sellingPrice}
                           </ins>
                         </span>
-                          
-                       
                       </div>
-                        <CCardTitle>{field.productName}</CCardTitle>
+                      <CCardTitle>{field.productName}</CCardTitle>
                       <div className="btn-cnt">
-                        <a className="buy-btn" 
-                         onClick={() => {
-                          localStorage.setItem("id", field.id);
-                          handleAddcart();
-                        }}
-                        >Add To Cart
-                        </a>    
+                        <a
+                          className="buy-btn"
+                          onClick={() => {
+                            localStorage.setItem("id", field.id);
+                            handleAddcart();
+                          }}
+                        >
+                          Add To Cart
+                        </a>
                       </div>
                     </CCardBody>
                   </CCard>
@@ -187,7 +222,6 @@ function Heroshop() {
         </div>
       </div>
       {/* ends */}
-
 
       {cart ? <Herocart /> : ""}
     </main>
