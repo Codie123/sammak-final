@@ -40,7 +40,7 @@ function App() {
           <Route path="/paymentcomplete" element={<Payment/>} />
           <Route path="/paymentfailed" element={<Paymentfailed/>} />
           <Route path="/paymentcanceled" element={<Paymentcanceled/>} />
-          <Route path="/activated" element={<Activated/>} />
+          <Route path="/registrationsuccess" element={<Activated/>} />
           <Route path="/timeout" element={<Timeout/>} />
           <Route path="/setting" element={<CheckoutMain />} />
           <Route path="/forgotpassword" element={<Password />} />
