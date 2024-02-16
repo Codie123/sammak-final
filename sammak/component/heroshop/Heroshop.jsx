@@ -40,6 +40,7 @@ function Heroshop() {
     setproductinfo,
     search,
     setsearch,
+    setcartdata,
   } = useContext(AllContext);
 
   const navigate = useNavigate();
@@ -98,6 +99,21 @@ function Heroshop() {
             closeOnClick: true,
             position: "bottom-center",
           });
+          axios
+            .get(
+              `${
+                import.meta.env.VITE_URL
+              }/CartMaster/getAll/${localStorage.getItem("userid")}`,
+              config
+            )
+            .then((res) => {
+              localStorage.setItem(
+                "cart",
+                JSON.stringify(res.data.result.cartItemResponseList)
+              );
+              setcartdata(res.data.result.cartItemResponseList);
+            })
+            .catch((err) => {});
         })
         .catch((err) => {
           toast.error("Ops something went wrong!", {

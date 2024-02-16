@@ -101,6 +101,8 @@ const Provider = ({ children }) => {
     setloginopen,
     setdata1,
     data1,
+    cartdata,
+    setcartdata,
   };
   return (
     <AllContext.Provider value={valuetoshare}>{children}</AllContext.Provider>

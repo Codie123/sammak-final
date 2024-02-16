@@ -25,7 +25,7 @@ function Shopview() {
     password: "",
     userName: "",
   });
-  const [cartdata, setcartdata] = useState("");
+
   const [shop, setshop] = useState(true);
   const [home, sethome] = useState(false);
   const [loading, setloading] = useState(false);
@@ -33,7 +33,8 @@ function Shopview() {
   const {
     loggedin,
     setloggedin,
-
+    cartdata,
+    setcartdata,
     about,
     setabout,
     contact,
