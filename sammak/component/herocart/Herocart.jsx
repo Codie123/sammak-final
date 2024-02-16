@@ -14,7 +14,9 @@ import "../../vendor/owl-carousel/owl.carousel.min.js";
 import { jwtDecode } from "jwt-decode";
 
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Autoplay, Pagination, Navigation } from "swiper/modules";
+import { Autoplay, Pagination, Navigation,Virtual } from "swiper/modules";
+
+
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
@@ -179,7 +181,28 @@ function Herocart() {
         {},
         config
       )
-      .then((res) => {})
+      .then((res) => {
+        toast.success('Added to cart',{
+          autoClose: 1000,
+          position: "top-center",
+          closeOnClick: true,
+        })
+        axios
+          .get(
+            `${
+              import.meta.env.VITE_URL
+            }/CartMaster/getAll/${localStorage.getItem("userid")}`,
+            config
+          )
+          .then((res) => {
+            localStorage.setItem(
+              "cart",
+              JSON.stringify(res.data.result.cartItemResponseList)
+            );
+            setcartdata(res.data.result.cartItemResponseList);
+          })
+          .catch((err) => {});
+      })
       .catch((err) => {});
   };
 
@@ -194,7 +217,7 @@ function Herocart() {
     }
   };
 
-  const handleDelete = (index, id) => {
+  const handleDelete = (index, id, cartid) => {
     let newCartdata =
       cartdata.length > 0 &&
       cartdata.filter((data, ind) => {
@@ -207,12 +230,12 @@ function Herocart() {
           import.meta.env.VITE_URL
         }/CartMaster/deleteByProductId/${id}/${parseInt(
           localStorage.getItem("userid")
-        )}`,
+        )}/${cartid}`,
         config
       )
       .then((res) => {})
-      .catch((err) => {});
-  };
+      .catch((err) => {});
+  };
 
   if (data) {
   }
@@ -742,9 +765,10 @@ function Herocart() {
                                 onClick={() => {
                                   handleDelete(
                                     index,
-                                    data.productResponse.productImages[0].id
+                                    data.productResponse.productId,
+                                    data.cartId
                                   );
-                                }}
+                                }}
                               >
                                 <i className="p-icon-times"></i>
                                 <span className="sr-only">Close</span>
@@ -856,28 +880,23 @@ function Herocart() {
           <div className="container">
             <div className="product product-single product-simple row mb-8">
               <div className="col-md-7">
-              <Swiper
-        rewind={true}
-        navigation={true}
-        modules={[Navigation]}
-        className="mySwiper"
-      >
-        {data &&
-                      data.length > 0 &&
-                      data[0].images.map((data1, index) => {
-                        return (
-                          <SwiperSlide key={index} className="">
-                            <img
-                              src={data1.imageUrl}
-                              data-zoom-image={data1.imageUrl}
-                              alt="1"
-                              style={{ width: 800, height: 600 }}
-                            />
-                          </SwiperSlide>
-                        );
-                      })}
+                <Swiper rewind={true} navigation={true} modules={[Navigation]} className="mySwiper">
+                      {data &&
+                        data.length > 0 &&
+                        data[0].images.map((data1, index) => {
+                          return (
+                            <SwiperSlide key={index} className="shop-slider">
+                              <img
+                                src={data1.imageUrl}
+                                data-zoom-image={data1.imageUrl}
+                                alt="1"
+                                style={{ width: 800, height: 600 }}
+                              />
+                            </SwiperSlide>
+                          );
+                        })}
         
-      </Swiper>
+                </Swiper>
               </div>
               <div className="col-md-5">
                 <div className="product-details">
@@ -974,119 +993,129 @@ function Herocart() {
         <div className="container">
           <section className="mt-3">
             <h2 className="text-center mb-7">Related Products</h2>
-            <div className="tab tab-nav-center product-tab product-tab-type2">
-              <div className="tab-content">
-                <div className="tab-pane active" id="canned">
-                  <div className="page-content mb-10 shop-page shop-horizontal">
-                    <div className="container">
-                      <div className="row product-wrapper cols-lg-5 cols-md-4 cols-sm-3 cols-2">
-                        {data1.length > 0 && Array.isArray(data1) ? (
-                          data1
-                            .map((field, index) => (
-                              <div
-                                className="product-wrap"
-                                style={{
-                                  display: "flex",
-                                  flexDirection: "row",
-                                }}
-                                key={index}
-                                onClick={() => {
-                                  setid(field.id);
-                                  localStorage.setItem("id", field.id);
-                                  onCart();
-                                }}
-                              >
-                                <div className="product shadow-media text-center">
-                                  <figure
-                                    className="product-media"
-                                    style={{ cursor: "pointer" }}
-                                  >
-                                    <a>
-                                      <img
-                                        src={
-                                          field.images.length > 0
-                                            ? field.images[0].imageUrl
-                                            : ""
-                                        }
-                                        alt="product"
-                                        style={{ width: "295", height: "369" }}
-                                        className="homelistingimg"
-                                      />
-                                      <img
-                                        src={
-                                          field.images.length > 0
-                                            ? field.images[0].imageUrl
-                                            : ""
-                                        }
-                                        alt="product"
-                                        style={{ width: "295", height: "369" }}
-                                      />
-                                    </a>
+            <div className="row tab-pane active">
+            <Swiper
+                modules={[Virtual, Navigation, Pagination]}
+              
+                slidesPerView={1}
+                breakpoints={{
+                  640: {
+                    slidesPerView: 2,
+                    spaceBetween: 20,
+                  },
+                  768:{
+                    slidesPerView: 3,
+                    spaceBetween: 20,
+                  },
+                  1025:{
+                    slidesPerView: 4,
+                    spaceBetween: 20,
+                  }
+                  
+                }}
+               
+                navigation={true}
+                virtual
+            >
+                {data1.length > 0 && Array.isArray(data1) ? (data1.map((field, index) => (
+                              
+                              <SwiperSlide key={field} virtualIndex={index} >
+                               <div
+                                                className="product-wrap shop-home col "
+                                                style={{
+                                                  display: "flex",flexDirection: "column",alignItems:"center",cursor:"pointer"
+                                                }}
+                                                key={index}
+                                                onClick={() => {
+                                                  setid(field.id);
+                                                  localStorage.setItem("id", field.id);
+                                                  onCart();
+                                                }}
+                                              >
+                                                
+                                                  <figure
+                                                    className="product-media"
+                                                    style={{ cursor: "pointer" }}
+                                                  >
+                                                      <img
+                                                        src={
+                                                          field.images.length > 0
+                                                            ? field.images[0].imageUrl
+                                                            : ""
+                                                        }
+                                                        alt="product"
+                                                        style={{ width: "295", height: "369" }}
+                                                      />
+                                                 
+                
+                                                    {/* Product actions */}
+                                                  </figure>
+                                                  <div className="product-details">
+                                                  <div className="ratings-container">
+                                                        <div className="d-flex align-items-center">
+                                                        <div className="ratings-full">
+                                                          <span
+                                                            className="ratings"
+                                                            style={{ width: "60%" }}
+                                                          ></span>
+                                                          <span className="tooltiptext tooltip-top"></span>
+                                                        </div>
+                                                        <a
+                                                          href="javascript:void(0);"
+                                                          className="rating-reviews"
+                                                        >
+                                                          ({Math.floor(Math.random() * 20 + 5)})
+                                                        </a>
+                                                        </div>
+                                                        <span className="product-price">
+                                                        <del className="old-price">
+                                                          {field.originalPrice} SAR
+                                                        </del>
+                                                        <ins
+                                                          className="new-price"
+                                                          style={{ fontWeight: "bold" }}
+                                                        >
+                                                        {field.sellingPrice} SAR
+                                                        </ins>
+                                                      </span>
+                
+                                                      </div>
+                                                      <div className="product-name-container">
+                                                        <h5 className="product-name"  style={{
+                                                            color: "#163b4d",
+                                                            fontWeight: "600",
+                                                            fontSize:"1.3em"
+                                                          }}>
+                                                        
+                                                          {field.productName}
+                
+                                                        </h5>
+                                                     
+                                                      </div>
+                                                   
+                                                  </div>
+                                              
+                                              </div>
+                            </SwiperSlide>
+                                             
+                
+                                            ))
+                                            .slice(0, 4)
+                                            ) : (
+                                              <div style={{ marginLeft: "30vw" }}>
+                                                <Loader
+                                                  type="bubble-scale"
+                                                  bgColor={"#163b4d"}
+                                                  color={"blue"}
+                                                  size={30}
+                                                />
+                                              </div>
+                                            )}
 
-                                    {/* Product actions */}
-                                  </figure>
-                                  <div className="product-details">
-                                    <div className="ratings-container">
-                                      <div className="ratings-full">
-                                        <span
-                                          className="ratings"
-                                          style={{ width: "60%" }}
-                                        ></span>
-                                        <span className="tooltiptext tooltip-top">
-                                          3.00
-                                        </span>
-                                      </div>
-                                      <a
-                                        href="javascript:void(0);"
-                                        className="rating-reviews"
-                                      >
-                                        ({Math.floor(Math.random() * 20 + 5)})
-                                      </a>
-                                    </div>
-                                    <h5 className="product-name">
-                                      <a
-                                        href="product-simple.html"
-                                        style={{
-                                          color: "#163b4d",
-                                          fontWeight: "600",
-                                          scale: "1.1",
-                                        }}
-                                      >
-                                        {field.productName}
-                                      </a>
-                                    </h5>
-                                    <span className="product-price">
-                                      <del className="old-price">
-                                        {field.originalPrice} SAR
-                                      </del>
-                                      <ins
-                                        className="new-price"
-                                        style={{ fontWeight: "bold" }}
-                                      >
-                                        &nbsp; {field.sellingPrice} SAR
-                                      </ins>
-                                    </span>
-                                  </div>
-                                </div>
-                              </div>
-                            ))
-                            .slice(0, 5)
-                        ) : (
-                          <div style={{ marginLeft: "30vw" }}>
-                            <Loader
-                              type="bubble-scale"
-                              bgColor={"#163b4d"}
-                              color={"blue"}
-                              size={30}
-                            />
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                </div>
+              </Swiper>
+         
+
               </div>
-            </div>
           </section>
         </div>
         <div className="mobile-menu-wrapper">

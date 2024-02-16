@@ -7,6 +7,8 @@ import Loader from "react-js-loader";
 import style from "./Heroshop.module.css";
 import "../../main.js";
 import { CCard, CCardBody, CCardImage, CCardSubtitle, CCardTitle, CCol, CRow } from '@coreui/react'
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 function Heroshop() {
   const [data, setdata] = useState("");
   const {
@@ -18,8 +20,16 @@ function Heroshop() {
     setproductinfo,
     search,
     setsearch,
-  } = useContext(AllContext);
+    isloggedin
 
+  } = useContext(AllContext);
+  const token = localStorage.getItem("token");
+  const config = {
+    headers: {
+      Accept: "/",
+      Authorization: `Bearer ` + token,
+    },
+  };
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -44,6 +54,40 @@ function Heroshop() {
 
   const onCart = () => {
     navigate("/shop");
+  };
+  const handleAddcart = () => {
+    if (!isloggedin) {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      toast.error("Please Login to Add cart", {
+        autoClose: 1500,
+        closeOnClick: true,
+        position: "top-center",
+      });
+    } else {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      axios
+        .post(
+          `${import.meta.env.VITE_URL}/cart/addToCart/${localStorage.getItem(
+            "id"
+          )}/${localStorage.getItem("userid")}/1/Cleaning Method 1`,
+          {},
+          config
+        )
+        .then((res) => {
+          toast.success(" Item Added to cart", {
+            autoClose: 1000,
+            closeOnClick: true,
+            position: "bottom-center",
+          });
+        })
+        .catch((err) => {
+          toast.error("Ops something went wrong!", {
+            autoClose: 1500,
+            closeOnClick: true,
+            position: "top-center",
+          });
+        });
+    }
   };
 
   return (
@@ -89,94 +133,62 @@ function Heroshop() {
                 </div>
               </div>
             )}
-
-
             {data.length > 0 &&
               Array.isArray(data) &&
               data.map((field, index) => (
-              
-                <CCol
-                className="col-6 col-sm-4 col-md-4 col-lg-3"
-                  key={index}
-                 
-                >
+                <CCol className="col  col-md-6 col-lg-4 col-xl-3" key={index} >
                   <CCard className="">
-                  <CCardImage  src={
-                            field.images.length > 0
-                              ? field.images[0].imageUrl
-                              : ""
-                          } />
+                  <div className="card-img-container" onClick={ () => {
+                          setid(field.id);
+                          localStorage.setItem("id", field.id);
+                          onCart(); }}>
 
+                  <CCardImage   src={field.images.length > 0 ? field.images[0].imageUrl : ""} />
+                  </div>   
+                 
                     <CCardBody>
-                    <div className="ratings-container">
-                      <div className="ratings-full">
-                        <span
-                          className="ratings"
-                          style={{ width: "60%" }}
-                        ></span>
-                        <span className="tooltiptext tooltip-top">3.00</span>
-                      </div>
-                          <a
-                            href="javascript:void(0);"
-                            className="rating-reviews"
+                      <div className="ratings-container">
+                        <div className="d-flex align-items-center">
+                          <div className="ratings-full">
+                              <span className="ratings" style={{ width: "60%" }}></span>
+                              <span className="tooltiptext tooltip-top">3.00</span>
+                          </div>
+                          <a className="rating-reviews" >({Math.floor(Math.random() * 20 + 5)})</a>
+                        </div>
+                        <span className="product-price">
+                          <del className="old-price">
+                            SAR {field.originalPrice} 
+                          </del>
+                          <ins
+                            className="new-price"
+                            style={{ fontWeight: "bold" }}
                           >
-                            ({Math.floor(Math.random() * 20 + 5)})
-                          </a>
-                    </div>
-                      {/* <div className="ratings-container">
-                        <div className="ratings-full">
-                          <span
-                            className="ratings"
-                            style={{ width: "60%" }}
-                          ></span>
-                          <span className="tooltiptext tooltip-top">3.00</span>
-                        </div>
-                        <a
-                          href="javascript:void(0);"
-                          className="rating-reviews"
-                        >
-                          (12)
-                        </a>
-                      </div> */}
-                      <CCardTitle>{field.productName}</CCardTitle>
-                        
-                     <CCardSubtitle>
-                      <del className="old-price">
-                        SAR {field.originalPrice} 
-                        </del>
-                        <ins
-                          className="new-price"
-                          style={{ fontWeight: "bold" }}
-                        >
-                          SAR {field.sellingPrice} 
-                        </ins>
+                            SAR {field.sellingPrice} 
+                          </ins>
+                        </span>
+                          
                        
-                        </CCardSubtitle>
-                        <div class="btn-cnt">
-                          <a class="buy-btn" 
-                           onClick={() => {
-                            setid(field.id);
-                            localStorage.setItem("id", field.id);
-                            onCart();
-                            window.location.reload();
-                          }}
-                          >Buy Now
-                          </a>    
-                        </div>
-                      
+                      </div>
+                        <CCardTitle>{field.productName}</CCardTitle>
+                      <div className="btn-cnt">
+                        <a className="buy-btn" 
+                         onClick={() => {
+                          localStorage.setItem("id", field.id);
+                          handleAddcart();
+                        }}
+                        >Add To Cart
+                        </a>    
+                      </div>
                     </CCardBody>
                   </CCard>
                 </CCol>
-             
               ))}
-
-
-            {/* Product 2 */}
-            {/* ... Other products */}
           </CRow>
         </div>
       </div>
       {/* ends */}
+
+
       {cart ? <Herocart /> : ""}
     </main>
   );

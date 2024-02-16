@@ -1,6 +1,9 @@
 
   
-
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+:root{
+  --font-poppins:"Poppins", sans-serif;
+}
   
   .swiper {
     width: 100%;
@@ -41,18 +44,21 @@
     justify-content: center;
     max-width: 804px;
     padding: 0 0 0 0rem;
+    font-family: var(--font-poppins);
 
   }
   .cuz-slider-wrapper :where(h1,h2){
     color: white;
     text-align: center;
+    line-height: 1;
+    font-weight: 400;
   }
-  .cuz-slider-wrapper h1{
-    margin-bottom: 1rem;
+  .cuz-slider-wrapper p{
+    color: white;
+    font-size: 1em;
+    margin: 0 0 0.5rem 0;
   }
-  .cuz-slider-wrapper h2{
-    margin-bottom: 2rem;
-  }
+
   .swiper-button-prev:after, .swiper-button-next:after{
     color: white!important;
   }
@@ -66,7 +72,16 @@
     
   }
   .cuz-hero-shop-btn:hover{
-    background-color: white;
-    color: black;
-    transition: all 0.5s ease-in;
+    background-color: #ee6c4d;
+    color: white;
+    transition: all 0.2s ease-in;
+    border-color: transparent;
+  }
+  @media(max-width:520px){
+    .cuz-slider-wrapper :where(h1,h2){
+      font-size: 1.5em;
+    }
+    .cuz-slider-wrapper p{
+      font-size: .8em;
+    }
   }

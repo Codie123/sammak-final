@@ -1,0 +1,28 @@
+.payment-complete-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  
+  .payment-complete-content {
+    text-align: center;
+  }
+  
+  .tick-icon {
+    font-size: 5rem;
+    color: #4caf50; /* Green color */
+  }
+  
+  h2 {
+    margin-top: 20px;
+    font-size: 2rem;
+    color: #333;
+  }
+  
+  p {
+    margin-top: 10px;
+    font-size: 1.2rem;
+    color: #666;
+  }
+  

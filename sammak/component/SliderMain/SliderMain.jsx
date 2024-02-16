@@ -46,7 +46,7 @@ function SliderMain(props) {
                     </h1>
                     <p>{data.description}</p>
 
-                    <a className="cuz-hero-shop-btn">Shop</a>
+                    <a href="/shopview"  className="cuz-hero-shop-btn">Shop Now</a>
                  </div>
                 </div>
               </SwiperSlide>

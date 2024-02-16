@@ -16,6 +16,8 @@ import Password from "../component/Forgotpassword/password";
 import Payment from "../component/PaymentComplete/PaymentComplete";
 import Paymentfailed from "../component/Paymentfailed/PaymentFailedPage";
 import Paymentcanceled from "../component/PaymentCanceled/PaymentCanceled";
+import Activated from "../component/Activated/Activated";
+import Timeout from "../component/Timeout/Timeout";
 
 
 
@@ -38,7 +40,8 @@ function App() {
           <Route path="/paymentcomplete" element={<Payment/>} />
           <Route path="/paymentfailed" element={<Paymentfailed/>} />
           <Route path="/paymentcanceled" element={<Paymentcanceled/>} />
-
+          <Route path="/activated" element={<Activated/>} />
+          <Route path="/timeout" element={<Timeout/>} />
           <Route path="/setting" element={<CheckoutMain />} />
           <Route path="/forgotpassword" element={<Password />} />
         </Routes>

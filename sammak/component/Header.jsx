@@ -726,7 +726,7 @@ function Header() {
               </li>
               <li>
                 <a
-                  className="mobile-menu-overlay"
+                  
                   style={{ cursor: "pointer" }}
                   href="/about"
                 >
@@ -735,7 +735,7 @@ function Header() {
               </li>
               <li>
                 <a
-                  className="mobile-menu-overlay"
+                  
                   href="/contact"
                   style={{ cursor: "pointer" }}
                 >
