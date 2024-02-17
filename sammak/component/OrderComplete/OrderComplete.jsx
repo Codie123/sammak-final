@@ -637,7 +637,7 @@ function OrderComplete() {
                               </a>
                             </figure>
                             <div className="product-detail">
-                              <a href="product.html" className="product-name">
+                              <a  className="product-name">
                                 {data.productResponse.productName}
                               </a>
                               <div className="price-box">

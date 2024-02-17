@@ -14,7 +14,8 @@ function Timeout() {
       <div className={styles["payment-failed-container"]}>
         <FaExclamationCircle className={styles["error-icon"]} />
         <h1>Registration failed</h1>
-        <p> &#40; Timeout &#41; .</p>
+        <p> &#40; Timeout &#41; </p>
+        <p>The Link Is Expired!</p>
         <p>Please try again</p>
       </div>
     </>
