@@ -146,7 +146,6 @@ function Shopview() {
       })
       .catch((err) => {});
   }, []);
-  useEffect(() => {}, [search]);
 
   const handleDelete = (index, id, cartid) => {
     let newCartdata =
@@ -323,9 +322,7 @@ function Shopview() {
                       setsearch(e.target.value);
                     }}
                   />
-                  <button className="btn btn-search" type="submit">
-                    <i className="p-icon-search-solid"></i>
-                  </button>
+                  <button className="btn btn-search" type="submit"></button>
                 </form>
               </div>
               <div className="dropdown login-dropdown off-canvas">

@@ -65,12 +65,13 @@ function Heroshop() {
 
   useEffect(() => {
     let newdata =
-      data.length > 0 &&
-      data.filter((info) => {
-        info.productName.includes(search);
+      productinfo.length > 0 &&
+      productinfo.filter((info) => {
+        return info.productName.toLowerCase().includes(search.toLowerCase());
       });
+
     setdata(newdata);
-  }, [search]);
+  }, [search, productinfo]);
 
   const onCart = () => {
     navigate("/shop");
@@ -168,8 +169,7 @@ function Heroshop() {
                 </div>
               </div>
             )}
-            {data.length > 0 &&
-              Array.isArray(data) &&
+            {data.length > 0 && Array.isArray(data) ? (
               data.map((field, index) => (
                 <CCol className="col  col-md-6 col-lg-4 col-xl-3" key={index}>
                   <CCard className="">
@@ -233,7 +233,18 @@ function Heroshop() {
                     </CCardBody>
                   </CCard>
                 </CCol>
-              ))}
+              ))
+            ) : (
+              <div className={style.loader_content}>
+                {" "}
+                <Loader
+                  type="bubble-scale"
+                  bgColor={"#163b4d"}
+                  color={"blue"}
+                  size={50}
+                />
+              </div>
+            )}
           </CRow>
         </div>
       </div>
