@@ -22,13 +22,11 @@ function Heroshop() {
   const [addCartLogin, setaddCartLogin] = useState(false);
 
   //paginaton
-  const itemsPerPage = 2;
+  const itemsPerPage = 5;
   const [currentPage, setCurrentPage] = useState(1);
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const handlePageChange = (pageNumber) => {
-    setCurrentPage(pageNumber);
-  };
+
   //pagination ends
   const {
     id,
@@ -130,8 +128,7 @@ function Heroshop() {
     if (data.length / itemsPerPage > currentPage) {
       setCurrentPage(currentPage + 1);
     } else {
-      setCurrentPage(Math.floor(data.length / itemsPerPage));
-      console.log(currentPage);
+      setCurrentPage(currentPage);
     }
   };
 
@@ -265,23 +262,27 @@ function Heroshop() {
             )}
           </CRow>
         </div>
-        <div>
-          <button
-            onClick={() => {
-              handleNextPage();
-            }}
-          >
-            Next
-          </button>
-          <p>{currentPage}</p>
-          <button
-            onClick={() => {
-              handlePreviousPage();
-            }}
-          >
-            Previous
-          </button>
-        </div>
+        {data.length <= itemsPerPage ? (
+          ""
+        ) : (
+          <div>
+            <button
+              onClick={() => {
+                handleNextPage();
+              }}
+            >
+              Next
+            </button>
+            <p>{currentPage}</p>
+            <button
+              onClick={() => {
+                handlePreviousPage();
+              }}
+            >
+              Previous
+            </button>
+          </div>
+        )}
       </div>
       {/* ends */}
 
