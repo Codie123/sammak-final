@@ -22,7 +22,7 @@ function Heroshop() {
   const [addCartLogin, setaddCartLogin] = useState(false);
 
   //paginaton
-  const itemsPerPage = 5;
+  const itemsPerPage = 2;
   const [currentPage, setCurrentPage] = useState(1);
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
@@ -65,12 +65,13 @@ function Heroshop() {
 
   useEffect(() => {
     let newdata =
-      data.length > 0 &&
-      data.filter((info) => {
-        info.productName.includes(search);
+      productinfo.length > 0 &&
+      productinfo.filter((info) => {
+        return info.productName.toLowerCase().includes(search.toLowerCase());
       });
+
     setdata(newdata);
-  }, [search]);
+  }, [search, productinfo]);
 
   const onCart = () => {
     navigate("/shop");
@@ -125,6 +126,22 @@ function Heroshop() {
     }
   };
 
+  const handleNextPage = () => {
+    if (data.length / itemsPerPage > currentPage) {
+      setCurrentPage(currentPage + 1);
+    } else {
+      setCurrentPage(Math.floor(data.length / itemsPerPage));
+      console.log(currentPage);
+    }
+  };
+
+  const handlePreviousPage = () => {
+    if (currentPage === 1) {
+      setCurrentPage(1);
+    } else {
+      setCurrentPage(currentPage - 1);
+    }
+  };
   return (
     <main className="main">
       {/* page Header */}
@@ -168,73 +185,102 @@ function Heroshop() {
                 </div>
               </div>
             )}
-            {data.length > 0 &&
-              Array.isArray(data) &&
-              data.map((field, index) => (
-                <CCol className="col  col-md-6 col-lg-4 col-xl-3" key={index}>
-                  <CCard className="">
-                    <div
-                      className="card-img-container"
-                      onClick={() => {
-                        setid(field.id);
-                        localStorage.setItem("id", field.id);
-                        onCart();
-                      }}
-                    >
-                      <CCardImage
-                        src={
-                          field.images.length > 0
-                            ? field.images[0].imageUrl
-                            : ""
-                        }
-                      />
-                    </div>
+            {data.length > 0 && Array.isArray(data) ? (
+              data
+                .map((field, index) => (
+                  <CCol className="col  col-md-6 col-lg-4 col-xl-3" key={index}>
+                    <CCard className="">
+                      <div
+                        className="card-img-container"
+                        onClick={() => {
+                          setid(field.id);
+                          localStorage.setItem("id", field.id);
+                          onCart();
+                        }}
+                      >
+                        <CCardImage
+                          src={
+                            field.images.length > 0
+                              ? field.images[0].imageUrl
+                              : ""
+                          }
+                        />
+                      </div>
 
-                    <CCardBody>
-                      <div className="ratings-container">
-                        <div className="d-flex align-items-center">
-                          <div className="ratings-full">
-                            <span
-                              className="ratings"
-                              style={{ width: "60%" }}
-                            ></span>
-                            <span className="tooltiptext tooltip-top">
-                              3.00
-                            </span>
+                      <CCardBody>
+                        <div className="ratings-container">
+                          <div className="d-flex align-items-center">
+                            <div className="ratings-full">
+                              <span
+                                className="ratings"
+                                style={{ width: "60%" }}
+                              ></span>
+                              <span className="tooltiptext tooltip-top">
+                                3.00
+                              </span>
+                            </div>
+                            <a className="rating-reviews">
+                              ({Math.floor(Math.random() * 20 + 5)})
+                            </a>
                           </div>
-                          <a className="rating-reviews">
-                            ({Math.floor(Math.random() * 20 + 5)})
+                          <span className="product-price">
+                            <del className="old-price">
+                              SAR {field.originalPrice}
+                            </del>
+                            <ins
+                              className="new-price"
+                              style={{ fontWeight: "bold" }}
+                            >
+                              SAR {field.sellingPrice}
+                            </ins>
+                          </span>
+                        </div>
+                        <CCardTitle>{field.productName}</CCardTitle>
+                        <div className="btn-cnt">
+                          <a
+                            className="buy-btn"
+                            onClick={() => {
+                              localStorage.setItem("id", field.id);
+                              handleAddcart();
+                            }}
+                          >
+                            Add To Cart
                           </a>
                         </div>
-                        <span className="product-price">
-                          <del className="old-price">
-                            SAR {field.originalPrice}
-                          </del>
-                          <ins
-                            className="new-price"
-                            style={{ fontWeight: "bold" }}
-                          >
-                            SAR {field.sellingPrice}
-                          </ins>
-                        </span>
-                      </div>
-                      <CCardTitle>{field.productName}</CCardTitle>
-                      <div className="btn-cnt">
-                        <a
-                          className="buy-btn"
-                          onClick={() => {
-                            localStorage.setItem("id", field.id);
-                            handleAddcart();
-                          }}
-                        >
-                          Add To Cart
-                        </a>
-                      </div>
-                    </CCardBody>
-                  </CCard>
-                </CCol>
-              ))}
+                      </CCardBody>
+                    </CCard>
+                  </CCol>
+                ))
+                .slice(indexOfFirstItem, indexOfLastItem)
+            ) : (
+              <div className={style.loader_content}>
+                {" "}
+                <Loader
+                  type="bubble-scale"
+                  bgColor={"#163b4d"}
+                  color={"blue"}
+                  size={50}
+                />
+              </div>
+            )}
           </CRow>
+        </div>
+        <div>
+          <button
+            onClick={() => {
+              handleNextPage();
+            }}
+          >
+            Next
+          </button>
+          <p>{currentPage}</p>
+          <button
+            onClick={() => {
+              handlePreviousPage();
+            }}
+          >
+            Previous
+          </button>
         </div>
       </div>
       {/* ends */}

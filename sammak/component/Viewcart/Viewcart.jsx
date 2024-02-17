@@ -456,22 +456,6 @@ function Viewcart() {
               </nav>
             </div>
             <div className="header-right">
-              <div className="header-search hs-toggle">
-                <a className="search-toggle" href="#" title="Search">
-                  <i className="p-icon-search-solid"></i>
-                </a>
-                <form action="#" className="form-simple">
-                  <input
-                    type="search"
-                    autoComplete="off"
-                    placeholder="Search in..."
-                    required=""
-                  />
-                  <button className="btn btn-search" type="submit">
-                    <i className="p-icon-search-solid"></i>
-                  </button>
-                </form>
-              </div>
               <div className="dropdown login-dropdown off-canvas">
                 {loggedin ? (
                   <button
@@ -723,7 +707,7 @@ function Viewcart() {
                         cartdata.map((data, index) => (
                           <div className="product product-mini" key={index}>
                             <figure className="product-media">
-                              <a href="product-simple.html">
+                              <a >
                                 {data.productResponse.productImages &&
                                 data.productResponse.productImages.length >
                                   0 ? (
