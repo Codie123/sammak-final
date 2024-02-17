@@ -175,7 +175,6 @@ function Checkout() {
     return Object.values(checkoutform).some((value) => value === "");
   };
   const handlePlace = (e) => {
-
     e.preventDefault();
     setloading(true);
     if (isAnyfieldEmpty()) {
@@ -451,22 +450,6 @@ function Checkout() {
               </nav>
             </div>
             <div className="header-right">
-              <div className="header-search hs-toggle">
-                <a className="search-toggle" href="#" title="Search">
-                  <i className="p-icon-search-solid"></i>
-                </a>
-                <form action="#" className="form-simple">
-                  <input
-                    type="search"
-                    autoComplete="off"
-                    placeholder="Search in..."
-                    required=""
-                  />
-                  <button className="btn btn-search" type="submit">
-                    <i className="p-icon-search-solid"></i>
-                  </button>
-                </form>
-              </div>
               <div className="dropdown login-dropdown off-canvas">
                 {loggedin ? (
                   <button
@@ -719,7 +702,7 @@ function Checkout() {
                         cartdata.map((data, index) => (
                           <div className="product product-mini" key={index}>
                             <figure className="product-media">
-                              <a href="product-simple.html">
+                              <a >
                                 <img
                                   src={
                                     data.productResponse.productImages[0]
@@ -746,7 +729,7 @@ function Checkout() {
                               </a>
                             </figure>
                             <div className="product-detail">
-                              <a  className="product-name">
+                              <a className="product-name">
                                 {data.productResponse.productName}
                               </a>
                               <div className="price-box">
