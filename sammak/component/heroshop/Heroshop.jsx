@@ -273,6 +273,7 @@ function Heroshop() {
           >
             Next
           </button>
+          <p>{currentPage}</p>
           <button
             onClick={() => {
               handlePreviousPage();
