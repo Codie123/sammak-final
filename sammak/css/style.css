@@ -16374,6 +16374,15 @@ header.header {
   transform: scale(1.4);
 }
 
+.cuz-pag-btn button{
+  padding: 1rem !important;
+  border-radius: 7px;
+  font-size: .7em;
+}
+.cuz-pag-btn .page-value{
+  padding: 1rem;
+  margin: 0;
+}
 /* ends */
 /* swiper navigation ovride  */
 .swiper-button-prev:after,
