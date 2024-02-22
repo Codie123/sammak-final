@@ -1,0 +1,37 @@
+.main {
+    display: flex;
+    flex-wrap: wrap;
+
+}
+
+.whybody {
+    display: flex;
+    flex-direction: column;
+    width: 30vw;
+    transform: translate(9.5vw, 0);
+    background-color: #F3F9FB;
+    padding: 4vh;
+    border-radius: 20px;
+
+}
+
+.whybody>:nth-child(2) {
+    transform: translate(20px, 0);
+}
+
+.whyvideo {
+    transform: translate(8vw, 2vh);
+    width: 100px;
+}
+
+.whyvideo:nth-child(1) {
+    border-radius: 20px;
+}
+
+@media (max-width:520px) {
+    .whybody {
+
+        width: 100vw;
+        transform: translate(0);
+    }
+}
