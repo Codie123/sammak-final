@@ -11659,19 +11659,20 @@ ul.pagination {
   position: absolute;
   display: inline-block;
   transition: color 0.4s;
-  right: -10px;
-  top: 6px;
+  right: -14px;
+  top: -2px;
   text-align: center;
-  font-size: 0.458em;
+  font-size: 1em;
   font-weight: 600;
   width: 1.9rem;
   height: 1.9rem;
   line-height: 1.9rem;
   border-radius: 50%;
-  background-color: #1b92cf;
-  color: #fff;
+  background-color: transparent;
+  color: #000;
   z-index: 1;
   padding-top: 1px;
+
 }
 
 .cart-dropdown .cart-total {
@@ -16383,12 +16384,55 @@ header.header {
   padding: 1rem;
   margin: 0;
 }
+.lg-btn{
+  padding: 0.5rem 3rem;
+  background: #1b90d0;
+  border-radius: 5px;
+  color: white;
+  border: 1px solid transparent;
+}
+.lg-btn:hover{
+  background: transparent;
+  border-color: #1b90d0;
+  color: #1b90d0;
+}
+
+
+.cuz-hero-sale-banner{
+  max-width: 1220px;
+  padding: 6rem 0;
+}
+.log-out{
+  cursor: pointer;
+}
+.log-out:hover path{
+  stroke: #007bb6;
+}
+.login-toggle:hover path{
+  stroke: #007bb6;
+}
+/* .scroll-watch{
+  position: fixed;
+  width: 100%;
+  height: 10px;
+  background-color: lime;
+  top: 0;
+  z-index: 10000;
+  scale: 0 1;
+  transform-origin: left;
+  animation: scroll-watch linear;
+  animation-timeline: scroll();
+}
+
+@keyframes scroll-watch{
+  to{
+
+    scale: 1 1;
+  }
+} */
 /* ends */
 /* swiper navigation ovride  */
-.swiper-button-prev:after,
-.swiper-button-next:after {
-  color: #ee6c4d !important;
-}
+
 
 /* ends */
 /* ends */

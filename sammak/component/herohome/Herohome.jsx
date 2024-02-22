@@ -54,9 +54,20 @@ function Herohome() {
       ) : (
         <main className="main">
           <div className="page-content">
+
+          {/* <div className="scroll-watch">
+
+          </div> */}
+
+         
+  
+
             {/* Hero section  */}
             <SliderMain />
             {/* <Slider /> */}
+
+
+
 
             {/* top products  */}
             <section
