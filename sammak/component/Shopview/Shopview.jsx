@@ -642,18 +642,11 @@ function Shopview() {
                     <div className="cart-action">
                       <a
                         className="btn btn-outline btn-dim mb-2"
-                        onClick={() => {
-                          navigate("/viewcart");
-                        }}
+                        href="/viewcart"
                       >
                         View Cart
                       </a>
-                      <a
-                        onClick={() => {
-                          navigate("/checkout");
-                        }}
-                        className="btn btn-dim"
-                      >
+                      <a href="/checkout" className="btn btn-dim">
                         <span>Go To Checkout</span>
                       </a>
                     </div>

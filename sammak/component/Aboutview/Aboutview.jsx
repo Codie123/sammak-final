@@ -42,7 +42,6 @@ function Aboutview() {
     setsearch,
   } = useContext(AllContext);
 
-
   let newdata = JSON.stringify(registeruser);
   const register = () => {
     if (
@@ -309,7 +308,6 @@ function Aboutview() {
               </nav>
             </div>
             <div className="header-right">
-              
               <div className="dropdown login-dropdown off-canvas">
                 {loggedin ? (
                   <button
@@ -596,7 +594,7 @@ function Aboutview() {
                               </a>
                             </figure>
                             <div className="product-detail">
-                              <a  className="product-name">
+                              <a className="product-name">
                                 {data.productResponse.productName}
                               </a>
                               <div className="price-box">
@@ -647,18 +645,11 @@ function Aboutview() {
                     <div className="cart-action">
                       <a
                         className="btn btn-outline btn-dim mb-2"
-                        onClick={() => {
-                          navigate("/viewcart");
-                        }}
+                        href="/viewcart"
                       >
                         View Cart
                       </a>
-                      <a
-                        onClick={() => {
-                          navigate("/checkout");
-                        }}
-                        className="btn btn-dim"
-                      >
+                      <a href="/checkout" className="btn btn-dim">
                         <span>Go To Checkout</span>
                       </a>
                     </div>
