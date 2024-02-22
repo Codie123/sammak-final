@@ -33,7 +33,7 @@ const SpecialSection = () => {
           <img src={whybody} alt="why our product" />
         </div>
         <div className={`${style.whyvideo}`}>
-          <video ref={videoRef}>
+          <video ref={videoRef} loop>
             <source src={whyvideo} type="video/mp4" />
             Your browser does not support the video tag.
           </video>
