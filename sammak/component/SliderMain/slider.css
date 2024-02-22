@@ -33,49 +33,56 @@
     position:absolute;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
-    background: linear-gradient(45deg, black, transparent);
+    background: linear-gradient(45deg, #00000057, transparent);
   }
   .cuz-slider-wrapper{
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
-    max-width: 804px;
+    max-width: 430px;
     padding: 0 0 0 0rem;
+    margin-left: 5rem;
+    gap: 1.5rem;
     font-family: var(--font-poppins);
 
   }
   .cuz-slider-wrapper :where(h1,h2){
     color: white;
-    text-align: center;
+    text-align: left;
     line-height: 1;
-    font-weight: 400;
+    font-weight: 800;
   }
   .cuz-slider-wrapper p{
     color: white;
     font-size: 1em;
+    font-weight: 200;
     margin: 0 0 0.5rem 0;
+    text-align: left;
   }
 
   .swiper-button-prev:after, .swiper-button-next:after{
     color: white!important;
   }
   .cuz-hero-shop-btn{
-    border: 1px solid white;
-    padding: 0.7rem 3.5rem;
-    background-color: transparent;
+    background: #023653;
+    border: 1px solid transparent;
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.5rem 1.5rem;
     color: white;
-    cursor: pointer;
-    transition: all 0.5s ease-out;
-    
+    transition: all 0.2s ease-out;
   }
   .cuz-hero-shop-btn:hover{
-    background-color: #ee6c4d;
+    background-color: transparent;
     color: white;
+    border-color: white;
     transition: all 0.2s ease-in;
-    border-color: transparent;
+  
   }
   @media(max-width:520px){
     .cuz-slider-wrapper :where(h1,h2){
