@@ -93,16 +93,9 @@ function Footer() {
           </div>
         </div>
 
-        <div className="footer-bottom">
+        <div className="footer-bottom justify-content-center">
           <p className="copyright">Sammak.store© 2024. All Rights Reserved</p>
-          <figure>
-            <img
-              src="images/payment.png"
-              alt="payment"
-              width="159"
-              height="29"
-            />
-          </figure>
+         
         </div>
       </div>
     </footer>

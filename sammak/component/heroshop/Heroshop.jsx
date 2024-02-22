@@ -8,6 +8,8 @@ import style from "./Heroshop.module.css";
 import "../../main.js";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { LazyLoadImage } from 'react-lazy-load-image-component';
+import 'react-lazy-load-image-component/src/effects/blur.css';
 import {
   CCard,
   CCardBody,
@@ -209,6 +211,7 @@ function Heroshop() {
                 .map((field, index) => (
                   <CCol className="col  col-md-6 col-lg-4 col-xl-3" key={index}>
                     <CCard className="">
+
                       <div
                         className="card-img-container"
                         onClick={() => {
@@ -217,13 +220,19 @@ function Heroshop() {
                           onCart();
                         }}
                       >
-                        <CCardImage
-                          src={
-                            field.images.length > 0
-                              ? field.images[0].imageUrl
-                              : "~"
-                          }
-                        />
+                       <div className="card-img-container">
+                       <LazyLoadImage
+                                    alt="product"
+                                   className='card-img'
+                                    effect="blur"
+                                    src={
+                                      field.images.length > 0
+                                        ? field.images[0].imageUrl
+                                        : "~"
+                                    }
+                                    />
+                       </div>
+                       
                       </div>
 
                       <CCardBody>

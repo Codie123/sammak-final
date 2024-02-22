@@ -5195,7 +5195,7 @@ screen and (-ms-high-contrast: active) {
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  color: #54524d;
+  color: white;
 }
 
 .social-link {
@@ -7738,6 +7738,7 @@ figure:hover .overlay-visible {
   width: 100%;
   height: 190px;
   overflow: hidden;
+  border-radius: 8px;
 }
 
 .product-media img {
@@ -11272,6 +11273,7 @@ ul.pagination {
 
 .logo img {
   display: block;
+  width: 15%;
 }
 
 .header-bottom {
@@ -12635,11 +12637,12 @@ ul.pagination {
 
 .footer {
   font-size: 0.875em;
-  background: #f8f8f8;
+  background: #023653;
 }
 
 .footer p {
   font-size: inherit;
+  color: white;
 }
 
 .footer a:not(.social-link):hover {
@@ -12651,7 +12654,7 @@ ul.pagination {
 }
 
 .footer-top {
-  color: #222;
+  color: white;
   padding-top: 8.8rem;
 }
 
@@ -12754,13 +12757,13 @@ ul.pagination {
 }
 
 .footer-middle .widget-newsletter p {
-  color: #54524d;
+  color: white;
   margin-bottom: 2.8rem;
 }
 
 .footer-left .widget-body li {
   padding: 3px 0;
-  color: #54524d;
+  color: white;
 }
 
 .footer-left .widget-body i {
@@ -12782,7 +12785,7 @@ ul.pagination {
 
 .footer .copyright {
   margin: 0;
-  color: #54524d;
+  color: white;
 }
 
 .sticky-footer {
@@ -14407,7 +14410,7 @@ ul.pagination {
 }
 
 .post-single .social-links {
-  color: #54524d;
+  color: white;
   padding-bottom: 4.5rem;
 }
 
@@ -16181,7 +16184,11 @@ header.header {
   top: 0;
   left: 0;
 }
-
+@media(max-width:700px){
+  .shop-hero{
+    min-height: auto;
+  }
+}
 .about-hero {
   background: url('../public/about-banner.jpg');
   min-height: 51vh;
@@ -16410,6 +16417,31 @@ header.header {
 }
 .login-toggle:hover path{
   stroke: #007bb6;
+}
+button.view-all{
+  font-weight: 600;
+  color: #023653;
+  width: fit-content;
+  cursor: pointer;
+}
+button.view-all svg{
+  margin-left: 1rem;
+}
+button.view-all::before{
+  content: "";
+  display: block;
+  width: 81%;
+  height: 2px;
+  background: #023653;
+  transform: translateY(28px);
+  scale: .6 1;
+  transition: all 0.2s ease-in-out;
+}
+button.view-all:hover::before{
+  scale: 1 1;
+}
+.lazy-load-image-background.blur.lazy-load-image-loaded{
+  width: 100%;
 }
 /* .scroll-watch{
   position: fixed;

@@ -262,8 +262,7 @@ function Header() {
                 <img
                   src="/images/logo.png"
                   alt="logo"
-                  width="171"
-                  height="41"
+                
                 />
               </a>
             </div>
@@ -329,8 +328,8 @@ function Header() {
                   navigate("/setting");
                 }}>
                     <svg width="23" height="23" viewBox="0 0 23 23" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M19.1663 20.125V18.2083C19.1663 17.1917 18.7625 16.2166 18.0436 15.4978C17.3247 14.7789 16.3497 14.375 15.333 14.375H7.66634C6.64968 14.375 5.67465 14.7789 4.95576 15.4978C4.23688 16.2166 3.83301 17.1917 3.83301 18.2083V20.125" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        <path d="M11.5003 10.5417C13.6174 10.5417 15.3337 8.82543 15.3337 6.70833C15.3337 4.59124 13.6174 2.875 11.5003 2.875C9.38323 2.875 7.66699 4.59124 7.66699 6.70833C7.66699 8.82543 9.38323 10.5417 11.5003 10.5417Z" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M19.1663 20.125V18.2083C19.1663 17.1917 18.7625 16.2166 18.0436 15.4978C17.3247 14.7789 16.3497 14.375 15.333 14.375H7.66634C6.64968 14.375 5.67465 14.7789 4.95576 15.4978C4.23688 16.2166 3.83301 17.1917 3.83301 18.2083V20.125" stroke="black" strokeWidth="2" strokeLinecap="round" stroke-linejoin="round"/>
+                        <path d="M11.5003 10.5417C13.6174 10.5417 15.3337 8.82543 15.3337 6.70833C15.3337 4.59124 13.6174 2.875 11.5003 2.875C9.38323 2.875 7.66699 4.59124 7.66699 6.70833C7.66699 8.82543 9.38323 10.5417 11.5003 10.5417Z" stroke="black" strokeWidth="2" strokeLinecap="round" stroke-linejoin="round"/>
                       </svg>
                     </button>
                     <button
@@ -347,6 +346,7 @@ function Header() {
                       Logout
                      
                     </button>
+
                   </div>
                     
                   </>
@@ -365,8 +365,8 @@ function Header() {
 
                         <a className="lg-btn" >Sign Up</a> */}
                         <svg width="23" height="23" viewBox="0 0 23 23" fill="none" xmlns="http://www.w3.org/2000/svg">
-                          <path d="M19.1663 20.125V18.2083C19.1663 17.1917 18.7625 16.2166 18.0436 15.4978C17.3247 14.7789 16.3497 14.375 15.333 14.375H7.66634C6.64968 14.375 5.67465 14.7789 4.95576 15.4978C4.23688 16.2166 3.83301 17.1917 3.83301 18.2083V20.125" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                          <path d="M11.5003 10.5417C13.6174 10.5417 15.3337 8.82543 15.3337 6.70833C15.3337 4.59124 13.6174 2.875 11.5003 2.875C9.38323 2.875 7.66699 4.59124 7.66699 6.70833C7.66699 8.82543 9.38323 10.5417 11.5003 10.5417Z" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                          <path d="M19.1663 20.125V18.2083C19.1663 17.1917 18.7625 16.2166 18.0436 15.4978C17.3247 14.7789 16.3497 14.375 15.333 14.375H7.66634C6.64968 14.375 5.67465 14.7789 4.95576 15.4978C4.23688 16.2166 3.83301 17.1917 3.83301 18.2083V20.125" stroke="black" strokeWidth="2" strokeLinecap="round" stroke-linejoin="round"/>
+                          <path d="M11.5003 10.5417C13.6174 10.5417 15.3337 8.82543 15.3337 6.70833C15.3337 4.59124 13.6174 2.875 11.5003 2.875C9.38323 2.875 7.66699 4.59124 7.66699 6.70833C7.66699 8.82543 9.38323 10.5417 11.5003 10.5417Z" stroke="black" strokeWidth="2" strokeLinecap="round" stroke-linejoin="round"/>
                         </svg>
                     
                         </a>
@@ -375,11 +375,11 @@ function Header() {
                     <div className="dropdown cart-dropdown off-canvas mr-0 mr-lg-2">
                   <a href="#" className="cart-toggle link">
                   <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M5 1.66675L2.5 5.00008V16.6667C2.5 17.1088 2.67559 17.5327 2.98816 17.8453C3.30072 18.1578 3.72464 18.3334 4.16667 18.3334H15.8333C16.2754 18.3334 16.6993 18.1578 17.0118 17.8453C17.3244 17.5327 17.5 17.1088 17.5 16.6667V5.00008L15 1.66675H5Z" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-                    <path d="M2.5 5H17.5" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-                    <path d="M13.3337 8.33325C13.3337 9.21731 12.9825 10.0652 12.3573 10.6903C11.7322 11.3154 10.8844 11.6666 10.0003 11.6666C9.11627 11.6666 8.26842 11.3154 7.6433 10.6903C7.01818 10.0652 6.66699 9.21731 6.66699 8.33325" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                    <path d="M5 1.66675L2.5 5.00008V16.6667C2.5 17.1088 2.67559 17.5327 2.98816 17.8453C3.30072 18.1578 3.72464 18.3334 4.16667 18.3334H15.8333C16.2754 18.3334 16.6993 18.1578 17.0118 17.8453C17.3244 17.5327 17.5 17.1088 17.5 16.6667V5.00008L15 1.66675H5Z" stroke="black" strokeWidth="2" strokeLinecap="round" stroke-linejoin="round"></path>
+                    <path d="M2.5 5H17.5" stroke="black" strokeWidth="2" strokeLinecap="round" stroke-linejoin="round"></path>
+                    <path d="M13.3337 8.33325C13.3337 9.21731 12.9825 10.0652 12.3573 10.6903C11.7322 11.3154 10.8844 11.6666 10.0003 11.6666C9.11627 11.6666 8.26842 11.3154 7.6433 10.6903C7.01818 10.0652 6.66699 9.21731 6.66699 8.33325" stroke="black" strokeWidth="2" strokeLinecap="round" stroke-linejoin="round"></path>
                   </svg>
-                    <span class="cart-count">0</span>
+                    <span className="cart-count">0</span>
                   </a>
 
                   <div className="canvas-overlay"></div>
@@ -719,11 +719,11 @@ function Header() {
                 <div className="dropdown cart-dropdown off-canvas mr-0 mr-lg-2">
                   <a href="#" className="cart-toggle link">
                   <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M5 1.66675L2.5 5.00008V16.6667C2.5 17.1088 2.67559 17.5327 2.98816 17.8453C3.30072 18.1578 3.72464 18.3334 4.16667 18.3334H15.8333C16.2754 18.3334 16.6993 18.1578 17.0118 17.8453C17.3244 17.5327 17.5 17.1088 17.5 16.6667V5.00008L15 1.66675H5Z" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-<path d="M2.5 5H17.5" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-<path d="M13.3337 8.33325C13.3337 9.21731 12.9825 10.0652 12.3573 10.6903C11.7322 11.3154 10.8844 11.6666 10.0003 11.6666C9.11627 11.6666 8.26842 11.3154 7.6433 10.6903C7.01818 10.0652 6.66699 9.21731 6.66699 8.33325" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+<path d="M5 1.66675L2.5 5.00008V16.6667C2.5 17.1088 2.67559 17.5327 2.98816 17.8453C3.30072 18.1578 3.72464 18.3334 4.16667 18.3334H15.8333C16.2754 18.3334 16.6993 18.1578 17.0118 17.8453C17.3244 17.5327 17.5 17.1088 17.5 16.6667V5.00008L15 1.66675H5Z" stroke="black" strokeWidth="2" strokeLinecap="round" stroke-linejoin="round"></path>
+<path d="M2.5 5H17.5" stroke="black" strokeWidth="2" strokeLinecap="round" stroke-linejoin="round"></path>
+<path d="M13.3337 8.33325C13.3337 9.21731 12.9825 10.0652 12.3573 10.6903C11.7322 11.3154 10.8844 11.6666 10.0003 11.6666C9.11627 11.6666 8.26842 11.3154 7.6433 10.6903C7.01818 10.0652 6.66699 9.21731 6.66699 8.33325" stroke="black" strokeWidth="2" strokeLinecap="round" stroke-linejoin="round"></path>
 </svg>
-<span class="cart-count">0</span>
+<span className="cart-count">0</span>
                   </a>
 
                   <div className="canvas-overlay"></div>
