@@ -12689,6 +12689,9 @@ ul.pagination {
   margin-bottom: 3.1rem;
 }
 
+.logo-footer img{
+  width: 20%;
+}
 .footer-middle .footer-right {
   text-align: right;
 }
