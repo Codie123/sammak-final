@@ -180,6 +180,8 @@ function Header() {
     }
   }, []);
 
+  
+
   const handleDelete = (index, id, cartid) => {
     let newCartdata =
       cartdata.length > 0 &&
@@ -672,16 +674,12 @@ function Header() {
                     <div className="cart-action">
                       <a
                         className="btn btn-outline btn-dim mb-2"
-                        onClick={() => {
-                          navigate("/viewcart");
-                        }}
+                      href="/viewcart"
                       >
                         View Cart
                       </a>
                       <a
-                        onClick={() => {
-                          navigate("/checkout");
-                        }}
+                       href="/checkout"
                         className="btn btn-dim"
                       >
                         <span>Go To Checkout</span>

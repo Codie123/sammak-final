@@ -277,7 +277,7 @@ function Contactview() {
                       onClick={() => {
                         navigate("/");
                       }}
-                      style={{ cursor:'pointer' }}
+                      style={{ cursor: "pointer" }}
                     >
                       Home
                     </a>
@@ -290,7 +290,7 @@ function Contactview() {
                       onClick={() => {
                         navigate("/shopview");
                       }}
-                      style={{ cursor:'pointer' }}
+                      style={{ cursor: "pointer" }}
                     >
                       Shop
                     </a>
@@ -303,7 +303,7 @@ function Contactview() {
                       onClick={() => {
                         navigate("/about");
                       }}
-                      style={{ cursor:'pointer' }}
+                      style={{ cursor: "pointer" }}
                     >
                       About Us
                     </a>
@@ -316,7 +316,7 @@ function Contactview() {
                       onClick={() => {
                         navigate("/contact");
                       }}
-                      style={{ cursor:'pointer' }}
+                      style={{ cursor: "pointer" }}
                     >
                       Contact Us
                     </a>
@@ -325,7 +325,6 @@ function Contactview() {
               </nav>
             </div>
             <div className="header-right">
-              
               <div className="dropdown login-dropdown off-canvas">
                 {loggedin ? (
                   <button
@@ -452,7 +451,6 @@ function Contactview() {
                                 )}
                               </button>
                             </form>
-                           
                           </div>
                           <div className="tab-pane" id="register">
                             <form
@@ -522,7 +520,6 @@ function Contactview() {
                                 Register
                               </button>
                             </form>
-                            
                           </div>
                         </div>
                       </div>
@@ -636,18 +633,11 @@ function Contactview() {
                     <div className="cart-action">
                       <a
                         className="btn btn-outline btn-dim mb-2"
-                        onClick={() => {
-                          navigate("/viewcart");
-                        }}
+                        href="/viewcart"
                       >
                         View Cart
                       </a>
-                      <a
-                        onClick={() => {
-                          navigate("/checkout");
-                        }}
-                        className="btn btn-dim"
-                      >
+                      <a href="/checkout" className="btn btn-dim">
                         <span>Go To Checkout</span>
                       </a>
                     </div>
@@ -734,7 +724,5 @@ function Contactview() {
     </>
   );
 }
-
-
 
 export default Contactview;

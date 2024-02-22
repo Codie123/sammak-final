@@ -19,13 +19,14 @@ import { Autoplay, Pagination, Navigation, Virtual } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
-function Herocart() {
+function Herocart(props) {
   const [loginuser, setloginuser] = useState({ email: "", password: "" });
   const [registeruser, setregisteruser] = useState({
     emailId: "",
     password: "",
     userName: "",
   });
+  console.log(props);
   const [loading, setloading] = useState(false);
   const [addCartLogin, setaddCartLogin] = useState(false);
   const [quantity, setquantity] = useState(1);
@@ -809,18 +810,11 @@ function Herocart() {
                     <div className="cart-action">
                       <a
                         className="btn btn-outline btn-dim mb-2"
-                        onClick={() => {
-                          navigate("/viewcart");
-                        }}
+                        href="/viewcart"
                       >
                         View Cart
                       </a>
-                      <a
-                        onClick={() => {
-                          navigate("/checkout");
-                        }}
-                        className="btn btn-dim"
-                      >
+                      <a href="/checkout" className="btn btn-dim">
                         <span>Go To Checkout</span>
                       </a>
                     </div>
@@ -1104,6 +1098,7 @@ function Herocart() {
             </div>
           </section>
         </div>
+
         <div className="mobile-menu-wrapper">
           <div className="mobile-menu-overlay"></div>
 
@@ -1112,19 +1107,6 @@ function Herocart() {
           </a>
 
           <div className="mobile-menu-container scrollable">
-            <form action="#" className="inline-form">
-              <input
-                type="search"
-                name="search"
-                autoComplete="off"
-                placeholder="Search your keyword..."
-                required=""
-              />
-              <button className="btn btn-search" type="submit">
-                <i className="p-icon-search-solid"></i>
-              </button>
-            </form>
-
             <ul className="mobile-menu mmenu-anim">
               <li>
                 <a href="/">Home</a>
@@ -1133,10 +1115,10 @@ function Herocart() {
                 <a href="/shopview">Shop</a>
               </li>
               <li>
-                <a href="about.html">About Us</a>
+                <a href="/about">About Us</a>
               </li>
               <li>
-                <a href="contact.html">Contact Us</a>
+                <a href="/contact">Contact Us</a>
               </li>
             </ul>
           </div>

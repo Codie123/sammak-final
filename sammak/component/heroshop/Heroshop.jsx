@@ -72,7 +72,7 @@ function Heroshop() {
   }, [search, productinfo]);
 
   const onCart = () => {
-    navigate("/shop");
+    window.location.href = "/shop";
   };
   const handleAddcart = () => {
     if (!isloggedin) {
@@ -83,7 +83,6 @@ function Heroshop() {
         position: "top-center",
       });
     } else {
-      window.scrollTo({ top: 0, behavior: "smooth" });
       axios
         .post(
           `${import.meta.env.VITE_URL}/cart/addToCart/${localStorage.getItem(
@@ -93,6 +92,7 @@ function Heroshop() {
           config
         )
         .then((res) => {
+          window.scrollTo({ top: 0, behavior: "smooth" });
           toast.success(" Item Added to cart", {
             autoClose: 1000,
             closeOnClick: true,
@@ -127,6 +127,7 @@ function Heroshop() {
   const handleNextPage = () => {
     if (data.length / itemsPerPage > currentPage) {
       setCurrentPage(currentPage + 1);
+      window.scrollTo({ top: 400, behavior: "smooth" });
     } else {
       setCurrentPage(currentPage);
     }
@@ -137,8 +138,29 @@ function Heroshop() {
       setCurrentPage(1);
     } else {
       setCurrentPage(currentPage - 1);
+      window.scrollTo({ top: 400, behavior: "smooth" });
     }
   };
+
+  const hightolow = () => {
+    let sort =
+      productinfo.length > 0 &&
+      productinfo?.sort((a, b) => {
+        a.sellingPrice - b.sellingPrice;
+      });
+
+    setcart(sort);
+  };
+  const lowtohigh = () => {
+    let sort =
+      productinfo.length > 0 &&
+      productinfo?.sort((a, b) => {
+        b.sellingPrice - a.sellingPrice;
+      });
+    console.log(sort);
+  };
+  console.log(data);
+
   return (
     <main className="main">
       {/* page Header */}
@@ -199,7 +221,7 @@ function Heroshop() {
                           src={
                             field.images.length > 0
                               ? field.images[0].imageUrl
-                              : ""
+                              : "~"
                           }
                         />
                       </div>
@@ -266,19 +288,18 @@ function Heroshop() {
           ""
         ) : (
           <div className="d-flex align-items-center justify-content-end gap-2 cuz-pag-btn mr-4">
-             <button
-            className="btn"
+            <button
+              className="btn"
               onClick={() => {
                 handlePreviousPage();
               }}
             >
               Previous
-
             </button>
             <p className="page-value">{currentPage}</p>
-           
 
-            <button className="btn"
+            <button
+              className="btn"
               onClick={() => {
                 handleNextPage();
               }}
@@ -289,8 +310,6 @@ function Heroshop() {
         )}
       </div>
       {/* ends */}
-
-      {cart ? <Herocart /> : ""}
     </main>
   );
 }
