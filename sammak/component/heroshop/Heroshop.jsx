@@ -137,25 +137,23 @@ function Heroshop() {
   };
 
   const handleNextPage = () => {
-    if (data.length / itemsPerPage > currentPage) {
-      setCurrentPage(currentPage + 1);
-      navigate(`/shopview/?page=${currentPage + 1}`);
+    const nextPage = currentPage + 1;
+    if (data.length / itemsPerPage > nextPage) {
+      setCurrentPage(nextPage);
+      navigate(`/shopview/?page=${nextPage}`);
       window.scrollTo({ top: 400, behavior: "smooth" });
-    } else {
-      setCurrentPage(currentPage);
     }
   };
-
+  
   const handlePreviousPage = () => {
-    if (currentPage === 1) {
-      setCurrentPage(1);
-    } else {
-      setCurrentPage(currentPage - 1);
-      navigate(`/shopview/?page=${currentPage - 1}`);
+    const prevPage = currentPage - 1;
+    if (prevPage >= 1) {
+      setCurrentPage(prevPage);
+      navigate(`/shopview/?page=${prevPage}`);
       window.scrollTo({ top: 400, behavior: "smooth" });
     }
   };
-
+  
   const lowtohigh = () => {
     let sort =
       productinfo.length > 0 &&
