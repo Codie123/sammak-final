@@ -10,6 +10,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
+
 import {
   CCard,
   CCardBody,
@@ -157,6 +158,7 @@ function Heroshop() {
   };
 
   const lowtohigh = () => {
+
     let sort =
       productinfo.length > 0 &&
       [...productinfo].sort((a, b) => a.sellingPrice - b.sellingPrice);

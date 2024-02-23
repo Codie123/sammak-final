@@ -19,6 +19,7 @@ import { Autoplay, Pagination, Navigation, Virtual } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
+
 function Herocart(props) {
   const [loginuser, setloginuser] = useState({ email: "", password: "" });
   const [registeruser, setregisteruser] = useState({
@@ -27,6 +28,7 @@ function Herocart(props) {
     userName: "",
   });
   console.log(props);
+
   const [loading, setloading] = useState(false);
   const [addCartLogin, setaddCartLogin] = useState(false);
   const [quantity, setquantity] = useState(1);
@@ -35,9 +37,12 @@ function Herocart(props) {
   const [cleaning, setcleaning] = useState("Cleaning Method 1");
   const [data1, setdata1] = useState("");
   const navigate = useNavigate();
+
   useEffect(() => {
+    
     let storedProduct = localStorage.getItem("products");
     let productId = localStorage.getItem("id");
+    
     if (storedProduct && productId) {
       let parseProduct = JSON.parse(storedProduct);
       productId = parseInt(productId);
@@ -47,14 +52,13 @@ function Herocart(props) {
 
       setdata(filterproduct);
     }
+    
     axios
       .get(`${import.meta.env.VITE_URL}/Product/post`)
-      .then((res) => {
-        setdata1(res.data.result);
-
-        localStorage.setItem("products", JSON.stringify(res.data.result));
-      })
+      .then((res) => {setdata1(res.data.result);localStorage.setItem("products", JSON.stringify(res.data.result));})
       .catch((err) => {});
+
+
   }, [localStorage.getItem("id")]);
 
   const {
@@ -74,7 +78,7 @@ function Herocart(props) {
     isloggedin,
     setid,
   } = useContext(AllContext);
-
+// authentication
   const register = () => {
     if (
       registeruser.emailId === "" ||
@@ -129,7 +133,6 @@ function Herocart(props) {
         .post(`${import.meta.env.VITE_URL}/v1/auth/login`, loginuser)
         .then((res) => {
           setloading(false);
-
           localStorage.setItem("userid", res.data.result.userId);
           localStorage.setItem("token", res.data.result.accessToken);
           if (res.data.result.accessToken) {
@@ -157,6 +160,8 @@ function Herocart(props) {
     }
   };
 
+  // ends
+  // configuration for api 
   const token = localStorage.getItem("token");
 
   const config = {
@@ -165,6 +170,7 @@ function Herocart(props) {
       Authorization: `Bearer ` + token,
     },
   };
+// ends
 
   const handleAddcart = () => {
     if (!isloggedin) {
@@ -175,9 +181,7 @@ function Herocart(props) {
 
     axios
       .post(
-        `${import.meta.env.VITE_URL}/cart/addToCart/${localStorage.getItem(
-          "id"
-        )}/${localStorage.getItem("userid")}/${quantity}/${cleaning}`,
+        `${import.meta.env.VITE_URL}/cart/addToCart/${localStorage.getItem("id")}/${localStorage.getItem("userid")}/${quantity}/${cleaning}`,
         {},
         config
       )
@@ -242,7 +246,7 @@ function Herocart(props) {
 
   function isTokenExpired(token) {
     const expiration = new Date(token.exp * 1000);
-    return Date.now() >= expiration;
+    return Date.now() >= expiration; //return true or false 
   }
 
   function logout() {
