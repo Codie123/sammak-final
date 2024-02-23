@@ -2,14 +2,14 @@ import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import AllContext from "../../src/Context/Context";
 import Herocart from "../herocart/Herocart";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import Loader from "react-js-loader";
 import style from "./Heroshop.module.css";
 import "../../main.js";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { LazyLoadImage } from 'react-lazy-load-image-component';
-import 'react-lazy-load-image-component/src/effects/blur.css';
+import { LazyLoadImage } from "react-lazy-load-image-component";
+import "react-lazy-load-image-component/src/effects/blur.css";
 import {
   CCard,
   CCardBody,
@@ -22,10 +22,16 @@ import {
 function Heroshop() {
   const [data, setdata] = useState("");
   const [addCartLogin, setaddCartLogin] = useState(false);
+  //location
+  const location = useLocation();
+  const params = new URLSearchParams(location.search);
+  const page = params.get("page");
+
+  console.log(page);
 
   //paginaton
   const itemsPerPage = 12;
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(page);
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
 
@@ -45,6 +51,8 @@ function Heroshop() {
 
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
+
+  //location
 
   const config = {
     headers: {
@@ -129,6 +137,7 @@ function Heroshop() {
   const handleNextPage = () => {
     if (data.length / itemsPerPage > currentPage) {
       setCurrentPage(currentPage + 1);
+      navigate(`/shopview/?page=${currentPage + 1}`);
       window.scrollTo({ top: 400, behavior: "smooth" });
     } else {
       setCurrentPage(currentPage);
@@ -140,6 +149,7 @@ function Heroshop() {
       setCurrentPage(1);
     } else {
       setCurrentPage(currentPage - 1);
+      navigate(`/shopview/?page=${currentPage - 1}`);
       window.scrollTo({ top: 400, behavior: "smooth" });
     }
   };
@@ -159,9 +169,7 @@ function Heroshop() {
       productinfo?.sort((a, b) => {
         b.sellingPrice - a.sellingPrice;
       });
-    console.log(sort);
   };
-  console.log(data);
 
   return (
     <main className="main">
@@ -211,7 +219,6 @@ function Heroshop() {
                 .map((field, index) => (
                   <CCol className="col  col-md-6 col-lg-4 col-xl-3" key={index}>
                     <CCard className="">
-
                       <div
                         className="card-img-container"
                         onClick={() => {
@@ -220,19 +227,18 @@ function Heroshop() {
                           onCart();
                         }}
                       >
-                       <div className="card-img-container">
-                       <LazyLoadImage
-                                    alt="product"
-                                   className='card-img'
-                                    effect="blur"
-                                    src={
-                                      field.images.length > 0
-                                        ? field.images[0].imageUrl
-                                        : "~"
-                                    }
-                                    />
-                       </div>
-                       
+                        <div className="card-img-container">
+                          <LazyLoadImage
+                            alt="product"
+                            className="card-img"
+                            effect="blur"
+                            src={
+                              field.images.length > 0
+                                ? field.images[0].imageUrl
+                                : "~"
+                            }
+                          />
+                        </div>
                       </div>
 
                       <CCardBody>

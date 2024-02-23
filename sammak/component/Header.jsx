@@ -180,8 +180,6 @@ function Header() {
     }
   }, []);
 
-  
-
   const handleDelete = (index, id, cartid) => {
     let newCartdata =
       cartdata.length > 0 &&
@@ -202,7 +200,31 @@ function Header() {
       .catch((err) => {});
   };
 
-  const onSearch = () => {};
+  if (localStorage.getItem("orders")) {
+    let orders = JSON.parse(localStorage.getItem("orders"));
+
+    let recentItems = orders.reduce((acc, item) => {
+      if (!acc.includes(item.productName)) {
+        acc.push(item.productName);
+      }
+      return acc;
+    }, []);
+
+    // Store recentItems as a string in localStorage
+    localStorage.setItem("recent", JSON.stringify(recentItems));
+  }
+
+  let products = JSON.parse(localStorage.getItem("products"));
+  let recent = JSON.parse(localStorage.getItem("recent")); // Parse the stored string as an array
+  if (products && recent) {
+    let filtered = products.filter((product) => {
+      return recent.includes(product.productName);
+    });
+
+    // Store filtered array as a string in localStorage
+    localStorage.setItem("recentItems", JSON.stringify(filtered));
+   
+  }
 
   return (
     <>
@@ -259,11 +281,7 @@ function Header() {
                 <i className="p-icon-bars-solid"></i>
               </a>
               <a href="/" className="logo">
-                <img
-                  src="/images/logo.png"
-                  alt="logo"
-                
-                />
+                <img src="/images/logo.png" alt="logo" />
               </a>
             </div>
             <div className="header-center">
@@ -319,36 +337,53 @@ function Header() {
               </nav>
             </div>
             <div className="header-right">
-             
               <div className="dropdown login-dropdown off-canvas">
                 {loggedin ? (
                   <>
-                  <div className="d-flex">
-                    <button className="log-out" onClick={() => {
-                  navigate("/setting");
-                }}>
-                    <svg width="23" height="23" viewBox="0 0 23 23" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M19.1663 20.125V18.2083C19.1663 17.1917 18.7625 16.2166 18.0436 15.4978C17.3247 14.7789 16.3497 14.375 15.333 14.375H7.66634C6.64968 14.375 5.67465 14.7789 4.95576 15.4978C4.23688 16.2166 3.83301 17.1917 3.83301 18.2083V20.125" stroke="black" strokeWidth="2" strokeLinecap="round" stroke-linejoin="round"/>
-                        <path d="M11.5003 10.5417C13.6174 10.5417 15.3337 8.82543 15.3337 6.70833C15.3337 4.59124 13.6174 2.875 11.5003 2.875C9.38323 2.875 7.66699 4.59124 7.66699 6.70833C7.66699 8.82543 9.38323 10.5417 11.5003 10.5417Z" stroke="black" strokeWidth="2" strokeLinecap="round" stroke-linejoin="round"/>
-                      </svg>
-                    </button>
-                    <button
-                      onClick={() => {
-                        localStorage.clear();
-                        window.location.reload();
-                      }}
-                      style={{
-                        position: "relative",
-                        left: "-1vh",
-                        cursor: "pointer",
-                      }}
-                    >
-                      Logout
-                     
-                    </button>
-
-                  </div>
-                    
+                    <div className="d-flex">
+                      <button
+                        className="log-out"
+                        onClick={() => {
+                          navigate("/setting");
+                        }}
+                      >
+                        <svg
+                          width="23"
+                          height="23"
+                          viewBox="0 0 23 23"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M19.1663 20.125V18.2083C19.1663 17.1917 18.7625 16.2166 18.0436 15.4978C17.3247 14.7789 16.3497 14.375 15.333 14.375H7.66634C6.64968 14.375 5.67465 14.7789 4.95576 15.4978C4.23688 16.2166 3.83301 17.1917 3.83301 18.2083V20.125"
+                            stroke="black"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            stroke-linejoin="round"
+                          />
+                          <path
+                            d="M11.5003 10.5417C13.6174 10.5417 15.3337 8.82543 15.3337 6.70833C15.3337 4.59124 13.6174 2.875 11.5003 2.875C9.38323 2.875 7.66699 4.59124 7.66699 6.70833C7.66699 8.82543 9.38323 10.5417 11.5003 10.5417Z"
+                            stroke="black"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            stroke-linejoin="round"
+                          />
+                        </svg>
+                      </button>
+                      <button
+                        onClick={() => {
+                          localStorage.clear();
+                          window.location.reload();
+                        }}
+                        style={{
+                          position: "relative",
+                          left: "-1vh",
+                          cursor: "pointer",
+                        }}
+                      >
+                        Logout
+                      </button>
+                    </div>
                   </>
                 ) : (
                   <div className="d-flex">
@@ -364,145 +399,189 @@ function Header() {
                         {/* <a className="lg-btn" >Login</a>
 
                         <a className="lg-btn" >Sign Up</a> */}
-                        <svg width="23" height="23" viewBox="0 0 23 23" fill="none" xmlns="http://www.w3.org/2000/svg">
-                          <path d="M19.1663 20.125V18.2083C19.1663 17.1917 18.7625 16.2166 18.0436 15.4978C17.3247 14.7789 16.3497 14.375 15.333 14.375H7.66634C6.64968 14.375 5.67465 14.7789 4.95576 15.4978C4.23688 16.2166 3.83301 17.1917 3.83301 18.2083V20.125" stroke="black" strokeWidth="2" strokeLinecap="round" stroke-linejoin="round"/>
-                          <path d="M11.5003 10.5417C13.6174 10.5417 15.3337 8.82543 15.3337 6.70833C15.3337 4.59124 13.6174 2.875 11.5003 2.875C9.38323 2.875 7.66699 4.59124 7.66699 6.70833C7.66699 8.82543 9.38323 10.5417 11.5003 10.5417Z" stroke="black" strokeWidth="2" strokeLinecap="round" stroke-linejoin="round"/>
+                        <svg
+                          width="23"
+                          height="23"
+                          viewBox="0 0 23 23"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M19.1663 20.125V18.2083C19.1663 17.1917 18.7625 16.2166 18.0436 15.4978C17.3247 14.7789 16.3497 14.375 15.333 14.375H7.66634C6.64968 14.375 5.67465 14.7789 4.95576 15.4978C4.23688 16.2166 3.83301 17.1917 3.83301 18.2083V20.125"
+                            stroke="black"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            stroke-linejoin="round"
+                          />
+                          <path
+                            d="M11.5003 10.5417C13.6174 10.5417 15.3337 8.82543 15.3337 6.70833C15.3337 4.59124 13.6174 2.875 11.5003 2.875C9.38323 2.875 7.66699 4.59124 7.66699 6.70833C7.66699 8.82543 9.38323 10.5417 11.5003 10.5417Z"
+                            stroke="black"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            stroke-linejoin="round"
+                          />
                         </svg>
-                    
-                        </a>
+                      </a>
                     </button>
 
                     <div className="dropdown cart-dropdown off-canvas mr-0 mr-lg-2">
-                  <a href="#" className="cart-toggle link">
-                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M5 1.66675L2.5 5.00008V16.6667C2.5 17.1088 2.67559 17.5327 2.98816 17.8453C3.30072 18.1578 3.72464 18.3334 4.16667 18.3334H15.8333C16.2754 18.3334 16.6993 18.1578 17.0118 17.8453C17.3244 17.5327 17.5 17.1088 17.5 16.6667V5.00008L15 1.66675H5Z" stroke="black" strokeWidth="2" strokeLinecap="round" stroke-linejoin="round"></path>
-                    <path d="M2.5 5H17.5" stroke="black" strokeWidth="2" strokeLinecap="round" stroke-linejoin="round"></path>
-                    <path d="M13.3337 8.33325C13.3337 9.21731 12.9825 10.0652 12.3573 10.6903C11.7322 11.3154 10.8844 11.6666 10.0003 11.6666C9.11627 11.6666 8.26842 11.3154 7.6433 10.6903C7.01818 10.0652 6.66699 9.21731 6.66699 8.33325" stroke="black" strokeWidth="2" strokeLinecap="round" stroke-linejoin="round"></path>
-                  </svg>
-                    <span className="cart-count">0</span>
-                  </a>
-
-                  <div className="canvas-overlay"></div>
-
-                  <div className="dropdown-box">
-                    <div className="canvas-header">
-                      <h4 className="canvas-title">Shopping Cart</h4>
-                      <a href="#" className="btn btn-dark btn-link btn-close">
-                        close<i className="p-icon-arrow-long-right"></i>
-                        <span className="sr-only">Cart</span>
-                      </a>
-                    </div>
-                    <div className="products scrollable">
-                      {cartdata.length > 0 ? (
-                        cartdata.map((data, index) => (
-                          <div className="product product-mini" key={index}>
-                            <figure className="product-media">
-                              <a>
-                                {data.productResponse.productImages &&
-                                data.productResponse.productImages.length >
-                                  0 ? (
-                                  <img
-                                    src={
-                                      data.productResponse.productImages[0]
-                                        .imageUrl
-                                    }
-                                    alt="product"
-                                    width="84"
-                                    height="105"
-                                    style={{ height: "105px", width: "84px" }}
-                                  />
-                                ) : (
-                                  <div>No Image Available</div>
-                                )}
-                              </a>
-                              <a
-                                title="Remove Product"
-                                className="btn-remove"
-                                onClick={() => {
-                                  handleDelete(
-                                    index,
-                                    data.productResponse.productId,
-                                    data.cartId
-                                  );
-                                }}
-                              >
-                                <i className="p-icon-times"></i>
-                                <span className="sr-only">Close</span>
-                              </a>
-                            </figure>
-                            <div className="product-detail">
-                              <a  className="product-name">
-                                {data.productResponse.productName}
-                              </a>
-                              <div className="price-box">
-                                <span className="product-quantity">
-                                  {data.quantity}
-                                </span>
-                                <span className="product-price">
-                                  {data.productResponse.sellingPrice}
-                                </span>
-                              </div>
-                            </div>
-                          </div>
-                        ))
-                      ) : cartdata.length === 0 ? (
-                        <div
-                          style={{
-                            marginTop: "2vh",
-                            marginLeft: "5vw",
-                          }}
+                      <a href="#" className="cart-toggle link">
+                        <svg
+                          width="20"
+                          height="20"
+                          viewBox="0 0 20 20"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
                         >
-                          No items are present
+                          <path
+                            d="M5 1.66675L2.5 5.00008V16.6667C2.5 17.1088 2.67559 17.5327 2.98816 17.8453C3.30072 18.1578 3.72464 18.3334 4.16667 18.3334H15.8333C16.2754 18.3334 16.6993 18.1578 17.0118 17.8453C17.3244 17.5327 17.5 17.1088 17.5 16.6667V5.00008L15 1.66675H5Z"
+                            stroke="black"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            stroke-linejoin="round"
+                          ></path>
+                          <path
+                            d="M2.5 5H17.5"
+                            stroke="black"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            stroke-linejoin="round"
+                          ></path>
+                          <path
+                            d="M13.3337 8.33325C13.3337 9.21731 12.9825 10.0652 12.3573 10.6903C11.7322 11.3154 10.8844 11.6666 10.0003 11.6666C9.11627 11.6666 8.26842 11.3154 7.6433 10.6903C7.01818 10.0652 6.66699 9.21731 6.66699 8.33325"
+                            stroke="black"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            stroke-linejoin="round"
+                          ></path>
+                        </svg>
+                        <span className="cart-count">0</span>
+                      </a>
+
+                      <div className="canvas-overlay"></div>
+
+                      <div className="dropdown-box">
+                        <div className="canvas-header">
+                          <h4 className="canvas-title">Shopping Cart</h4>
+                          <a
+                            href="#"
+                            className="btn btn-dark btn-link btn-close"
+                          >
+                            close<i className="p-icon-arrow-long-right"></i>
+                            <span className="sr-only">Cart</span>
+                          </a>
                         </div>
-                      ) : (
-                        <span style={{ position: "relative", top: "2vh" }}>
-                          {" "}
-                          <Loader
-                            type="bubble-scale"
-                            bgColor={"#163b4d"}
-                            color={"blue"}
-                            size={30}
-                          />
-                        </span>
-                      )}
-                    </div>
+                        <div className="products scrollable">
+                          {cartdata.length > 0 ? (
+                            cartdata.map((data, index) => (
+                              <div className="product product-mini" key={index}>
+                                <figure className="product-media">
+                                  <a>
+                                    {data.productResponse.productImages &&
+                                    data.productResponse.productImages.length >
+                                      0 ? (
+                                      <img
+                                        src={
+                                          data.productResponse.productImages[0]
+                                            .imageUrl
+                                        }
+                                        alt="product"
+                                        width="84"
+                                        height="105"
+                                        style={{
+                                          height: "105px",
+                                          width: "84px",
+                                        }}
+                                      />
+                                    ) : (
+                                      <div>No Image Available</div>
+                                    )}
+                                  </a>
+                                  <a
+                                    title="Remove Product"
+                                    className="btn-remove"
+                                    onClick={() => {
+                                      handleDelete(
+                                        index,
+                                        data.productResponse.productId,
+                                        data.cartId
+                                      );
+                                    }}
+                                  >
+                                    <i className="p-icon-times"></i>
+                                    <span className="sr-only">Close</span>
+                                  </a>
+                                </figure>
+                                <div className="product-detail">
+                                  <a className="product-name">
+                                    {data.productResponse.productName}
+                                  </a>
+                                  <div className="price-box">
+                                    <span className="product-quantity">
+                                      {data.quantity}
+                                    </span>
+                                    <span className="product-price">
+                                      {data.productResponse.sellingPrice}
+                                    </span>
+                                  </div>
+                                </div>
+                              </div>
+                            ))
+                          ) : cartdata.length === 0 ? (
+                            <div
+                              style={{
+                                marginTop: "2vh",
+                                marginLeft: "5vw",
+                              }}
+                            >
+                              No items are present
+                            </div>
+                          ) : (
+                            <span style={{ position: "relative", top: "2vh" }}>
+                              {" "}
+                              <Loader
+                                type="bubble-scale"
+                                bgColor={"#163b4d"}
+                                color={"blue"}
+                                size={30}
+                              />
+                            </span>
+                          )}
+                        </div>
 
-                    <div className="cart-total">
-                      <label>Total:</label>
-                      <span className="price">
-                        {" "}
-                        {cartdata.length > 0 &&
-                          cartdata.reduce((acc, curr) => {
-                            return acc + curr.subtotal;
-                          }, 0)}{" "}
-                        SAR
-                      </span>
-                    </div>
+                        <div className="cart-total">
+                          <label>Total:</label>
+                          <span className="price">
+                            {" "}
+                            {cartdata.length > 0 &&
+                              cartdata.reduce((acc, curr) => {
+                                return acc + curr.subtotal;
+                              }, 0)}{" "}
+                            SAR
+                          </span>
+                        </div>
 
-                    <div className="cart-action">
-                      <a
-                        className="btn btn-outline btn-dim mb-2"
-                        onClick={() => {
-                          navigate("/viewcart");
-                        }}
-                      >
-                        View Cart
-                      </a>
-                      <a
-                        onClick={() => {
-                          navigate("/checkout");
-                        }}
-                        className="btn btn-dim"
-                      >
-                        <span>Go To Checkout</span>
-                      </a>
+                        <div className="cart-action">
+                          <a
+                            className="btn btn-outline btn-dim mb-2"
+                            onClick={() => {
+                              navigate("/viewcart");
+                            }}
+                          >
+                            View Cart
+                          </a>
+                          <a
+                            onClick={() => {
+                              navigate("/checkout");
+                            }}
+                            className="btn btn-dim"
+                          >
+                            <span>Go To Checkout</span>
+                          </a>
+                        </div>
+                      </div>
                     </div>
                   </div>
-                </div>
-                  </div>
-                 
-
-                  
                 )}
 
                 <div className="canvas-overlay"></div>
@@ -718,12 +797,36 @@ function Header() {
               {loggedin && (
                 <div className="dropdown cart-dropdown off-canvas mr-0 mr-lg-2">
                   <a href="#" className="cart-toggle link">
-                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M5 1.66675L2.5 5.00008V16.6667C2.5 17.1088 2.67559 17.5327 2.98816 17.8453C3.30072 18.1578 3.72464 18.3334 4.16667 18.3334H15.8333C16.2754 18.3334 16.6993 18.1578 17.0118 17.8453C17.3244 17.5327 17.5 17.1088 17.5 16.6667V5.00008L15 1.66675H5Z" stroke="black" strokeWidth="2" strokeLinecap="round" stroke-linejoin="round"></path>
-<path d="M2.5 5H17.5" stroke="black" strokeWidth="2" strokeLinecap="round" stroke-linejoin="round"></path>
-<path d="M13.3337 8.33325C13.3337 9.21731 12.9825 10.0652 12.3573 10.6903C11.7322 11.3154 10.8844 11.6666 10.0003 11.6666C9.11627 11.6666 8.26842 11.3154 7.6433 10.6903C7.01818 10.0652 6.66699 9.21731 6.66699 8.33325" stroke="black" strokeWidth="2" strokeLinecap="round" stroke-linejoin="round"></path>
-</svg>
-<span className="cart-count">0</span>
+                    <svg
+                      width="20"
+                      height="20"
+                      viewBox="0 0 20 20"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M5 1.66675L2.5 5.00008V16.6667C2.5 17.1088 2.67559 17.5327 2.98816 17.8453C3.30072 18.1578 3.72464 18.3334 4.16667 18.3334H15.8333C16.2754 18.3334 16.6993 18.1578 17.0118 17.8453C17.3244 17.5327 17.5 17.1088 17.5 16.6667V5.00008L15 1.66675H5Z"
+                        stroke="black"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        stroke-linejoin="round"
+                      ></path>
+                      <path
+                        d="M2.5 5H17.5"
+                        stroke="black"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        stroke-linejoin="round"
+                      ></path>
+                      <path
+                        d="M13.3337 8.33325C13.3337 9.21731 12.9825 10.0652 12.3573 10.6903C11.7322 11.3154 10.8844 11.6666 10.0003 11.6666C9.11627 11.6666 8.26842 11.3154 7.6433 10.6903C7.01818 10.0652 6.66699 9.21731 6.66699 8.33325"
+                        stroke="black"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        stroke-linejoin="round"
+                      ></path>
+                    </svg>
+                    <span className="cart-count">0</span>
                   </a>
 
                   <div className="canvas-overlay"></div>
@@ -775,7 +878,7 @@ function Header() {
                               </a>
                             </figure>
                             <div className="product-detail">
-                              <a  className="product-name">
+                              <a className="product-name">
                                 {data.productResponse.productName}
                               </a>
                               <div className="price-box">
@@ -826,14 +929,11 @@ function Header() {
                     <div className="cart-action">
                       <a
                         className="btn btn-outline btn-dim mb-2"
-                      href="/viewcart"
+                        href="/viewcart"
                       >
                         View Cart
                       </a>
-                      <a
-                       href="/checkout"
-                        className="btn btn-dim"
-                      >
+                      <a href="/checkout" className="btn btn-dim">
                         <span>Go To Checkout</span>
                       </a>
                     </div>
@@ -875,20 +975,12 @@ function Header() {
                 </a>
               </li>
               <li>
-                <a
-                  
-                  style={{ cursor: "pointer" }}
-                  href="/about"
-                >
+                <a style={{ cursor: "pointer" }} href="/about">
                   About Us
                 </a>
               </li>
               <li>
-                <a
-                  
-                  href="/contact"
-                  style={{ cursor: "pointer" }}
-                >
+                <a href="/contact" style={{ cursor: "pointer" }}>
                   Contact Us
                 </a>
               </li>
