@@ -25,9 +25,11 @@ function Heroshop() {
   //location
   const location = useLocation();
   const params = new URLSearchParams(location.search);
-  const page = params.get("page");
+  let page = params.get("page");
 
-  console.log(page);
+  if (page === null) {
+    page = 1;
+  }
 
   //paginaton
   const itemsPerPage = 12;
