@@ -156,21 +156,33 @@ function Heroshop() {
     }
   };
 
-  const hightolow = () => {
-    let sort =
-      productinfo.length > 0 &&
-      productinfo?.sort((a, b) => {
-        a.sellingPrice - b.sellingPrice;
-      });
-
-    setcart(sort);
-  };
   const lowtohigh = () => {
     let sort =
       productinfo.length > 0 &&
-      productinfo?.sort((a, b) => {
-        b.sellingPrice - a.sellingPrice;
-      });
+      [...productinfo].sort((a, b) => a.sellingPrice - b.sellingPrice);
+    setdata(sort);
+    console.log(sort);
+  };
+
+  const hightolow = () => {
+    let sort =
+      productinfo.length > 0 &&
+      [...productinfo].sort((a, b) => b.sellingPrice - a.sellingPrice);
+    setdata(sort);
+  };
+
+  const [selectedOption, setSelectedOption] = useState("");
+
+  const handleChange = (event) => {
+    const selectedValue = event.target.value;
+    setSelectedOption(selectedValue);
+
+    // Perform actions based on the selected option
+    if (selectedValue === "highToLow") {
+      hightolow();
+    } else if (selectedValue === "lowToHigh") {
+      lowtohigh();
+    }
   };
 
   return (
@@ -196,6 +208,23 @@ function Heroshop() {
         </div>
       </nav>
       {/* ends */}
+      <div className={style.dropdown}>
+        <select
+          className={style.select}
+          value={selectedOption}
+          onChange={handleChange}
+        >
+          <option value="" disabled>
+            Sort by
+          </option>
+          <option className={style.option} value="highToLow">
+            High to Low
+          </option>
+          <option className={style.option} value="lowToHigh">
+            Low to High
+          </option>
+        </select>
+      </div>
 
       {/* page content static container */}
       <div className="page-content mb-10 shop-page shop-horizontal">
