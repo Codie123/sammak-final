@@ -359,14 +359,14 @@ function Header() {
                             stroke="black"
                             strokeWidth="2"
                             strokeLinecap="round"
-                            stroke-linejoin="round"
+                            strokeLinejoin="round"
                           />
                           <path
                             d="M11.5003 10.5417C13.6174 10.5417 15.3337 8.82543 15.3337 6.70833C15.3337 4.59124 13.6174 2.875 11.5003 2.875C9.38323 2.875 7.66699 4.59124 7.66699 6.70833C7.66699 8.82543 9.38323 10.5417 11.5003 10.5417Z"
                             stroke="black"
                             strokeWidth="2"
                             strokeLinecap="round"
-                            stroke-linejoin="round"
+                            strokeLinejoin="round"
                           />
                         </svg>
                       </button>
@@ -411,14 +411,14 @@ function Header() {
                             stroke="black"
                             strokeWidth="2"
                             strokeLinecap="round"
-                            stroke-linejoin="round"
+                            strokeLinejoin="round"
                           />
                           <path
                             d="M11.5003 10.5417C13.6174 10.5417 15.3337 8.82543 15.3337 6.70833C15.3337 4.59124 13.6174 2.875 11.5003 2.875C9.38323 2.875 7.66699 4.59124 7.66699 6.70833C7.66699 8.82543 9.38323 10.5417 11.5003 10.5417Z"
                             stroke="black"
                             strokeWidth="2"
                             strokeLinecap="round"
-                            stroke-linejoin="round"
+                            strokeLinejoin="round"
                           />
                         </svg>
                       </a>
@@ -438,21 +438,21 @@ function Header() {
                             stroke="black"
                             strokeWidth="2"
                             strokeLinecap="round"
-                            stroke-linejoin="round"
+                            strokeLinejoin="round"
                           ></path>
                           <path
                             d="M2.5 5H17.5"
                             stroke="black"
                             strokeWidth="2"
                             strokeLinecap="round"
-                            stroke-linejoin="round"
+                            strokeLinejoin="round"
                           ></path>
                           <path
                             d="M13.3337 8.33325C13.3337 9.21731 12.9825 10.0652 12.3573 10.6903C11.7322 11.3154 10.8844 11.6666 10.0003 11.6666C9.11627 11.6666 8.26842 11.3154 7.6433 10.6903C7.01818 10.0652 6.66699 9.21731 6.66699 8.33325"
                             stroke="black"
                             strokeWidth="2"
                             strokeLinecap="round"
-                            stroke-linejoin="round"
+                            strokeLinejoin="round"
                           ></path>
                         </svg>
                         <span className="cart-count">0</span>
@@ -809,21 +809,21 @@ function Header() {
                         stroke="black"
                         strokeWidth="2"
                         strokeLinecap="round"
-                        stroke-linejoin="round"
+                        strokeLinejoin="round"
                       ></path>
                       <path
                         d="M2.5 5H17.5"
                         stroke="black"
                         strokeWidth="2"
                         strokeLinecap="round"
-                        stroke-linejoin="round"
+                        strokeLinejoin="round"
                       ></path>
                       <path
                         d="M13.3337 8.33325C13.3337 9.21731 12.9825 10.0652 12.3573 10.6903C11.7322 11.3154 10.8844 11.6666 10.0003 11.6666C9.11627 11.6666 8.26842 11.3154 7.6433 10.6903C7.01818 10.0652 6.66699 9.21731 6.66699 8.33325"
                         stroke="black"
                         strokeWidth="2"
                         strokeLinecap="round"
-                        stroke-linejoin="round"
+                        strokeLinejoin="round"
                       ></path>
                     </svg>
                     <span className="cart-count">0</span>
