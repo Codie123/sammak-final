@@ -98,8 +98,8 @@
 
 .dropdown {
     margin: 10px;
-    width: 10rem;
-    transform: translate(2vw, 1vh);
+    width: 13rem;
+    transform: translate(10vw, 1vh);
 }
 
 /* Style for the select element */
@@ -109,12 +109,12 @@
     border: 1px solid #ccc;
     border-radius: 4px;
     background-color: #fff;
-    color: #333;
+    color: #50bcff;
     cursor: pointer;
 }
 
 /* Style for the options within the select element */
 .option {
     background-color: #fff;
-    color: #333;
+    color: #22b2f9;
 }

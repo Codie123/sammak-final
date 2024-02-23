@@ -174,6 +174,7 @@ function Heroshop() {
   const [selectedOption, setSelectedOption] = useState("");
 
   const handleChange = (event) => {
+    setCurrentPage(1);
     const selectedValue = event.target.value;
     setSelectedOption(selectedValue);
 
