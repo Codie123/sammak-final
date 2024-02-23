@@ -118,3 +118,9 @@
     background-color: #fff;
     color: #22b2f9;
 }
+
+@media (max-width:512px) {
+    .dropdown {
+        transform: translate(4vw, 1vh);
+    }
+}
