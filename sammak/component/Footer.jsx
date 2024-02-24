@@ -1,5 +1,5 @@
 import React from "react";
-import "../main.js";
+
 function Footer() {
   return (
     <footer className="footer">
@@ -81,21 +81,18 @@ function Footer() {
             <div className="widget-newsletter">
               <h4 className="widget-title font-weight-bold"></h4>
               <p className="text-color-dim">
-              
-              Sammak, a prominent and well-established 
-              <br/>
-              seafood company headquartered in jazan,
+                Sammak, a prominent and well-established
                 <br />
-               Kingdom of saudi arabia since the early 1990s.
+                seafood company headquartered in jazan,
+                <br />
+                Kingdom of saudi arabia since the early 1990s.
               </p>
-              
             </div>
           </div>
         </div>
 
         <div className="footer-bottom justify-content-center">
           <p className="copyright">Sammak.store© 2024. All Rights Reserved</p>
-         
         </div>
       </div>
     </footer>

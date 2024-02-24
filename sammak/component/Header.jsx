@@ -13,9 +13,8 @@ import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 import Loader from "react-js-loader";
 import { RotatingLines } from "react-loader-spinner";
-import "../main.js";
 import { jwtDecode } from "jwt-decode";
-function Header() {
+function Header({ homeValue, shopValue, contactValue, aboutValue }) {
   const [loginuser, setloginuser] = useState({ email: "", password: "" });
   const [registeruser, setregisteruser] = useState({
     emailId: "",
@@ -38,12 +37,17 @@ function Header() {
     setabout,
     contact,
     setcontact,
+    setcart,
     cart,
     search,
     setsearch,
     loginopen,
     setloginopen,
   } = useContext(AllContext);
+  sethome(homeValue);
+  setshop(shopValue);
+  setabout(aboutValue);
+  setcontact(contactValue);
 
   let newdata = JSON.stringify(registeruser);
   const register = () => {
@@ -134,23 +138,23 @@ function Header() {
     },
   };
 
-  useEffect(() => {
-    axios
-      .get(
-        `${import.meta.env.VITE_URL}/CartMaster/getAll/${localStorage.getItem(
-          "userid"
-        )}`,
-        config
-      )
-      .then((res) => {
-        localStorage.setItem(
-          "cart",
-          JSON.stringify(res.data.result.cartItemResponseList)
-        );
-        setcartdata(res.data.result.cartItemResponseList);
-      })
-      .catch((err) => {});
-  }, []);
+  // useEffect(() => {
+  //   axios
+  //     .get(
+  //       `${import.meta.env.VITE_URL}/CartMaster/getAll/${localStorage.getItem(
+  //         "userid"
+  //       )}`,
+  //       config
+  //     )
+  //     .then((res) => {
+  //       localStorage.setItem(
+  //         "cart",
+  //         JSON.stringify(res.data.result.cartItemResponseList)
+  //       );
+  //       setcartdata(res.data.result.cartItemResponseList);
+  //     })
+  //     .catch((err) => {});
+  // }, []);
 
   function isTokenExpired(token) {
     const expiration = new Date(token.exp * 1000);
@@ -162,6 +166,7 @@ function Header() {
     localStorage.removeItem("userid");
     localStorage.removeItem("cart");
     localStorage.removeItem("orders");
+    localStorage.removeItem("recentItems");
     window.location.reload();
   }
 
@@ -223,8 +228,15 @@ function Header() {
 
     // Store filtered array as a string in localStorage
     localStorage.setItem("recentItems", JSON.stringify(filtered));
-   
   }
+
+  const removeFromCart = (productId) => {
+    if (cart) {
+      let newcart = cart.filter((item) => item.id !== productId);
+      setcart(newcart);
+      localStorage.setItem("cartinfo", JSON.stringify(newcart));
+    }
+  };
 
   return (
     <>
@@ -290,6 +302,10 @@ function Header() {
                   <li className={home ? "active" : ""}>
                     <a
                       onClick={() => {
+                        sethome(true);
+                        setshop(false);
+                        setabout(false);
+                        setcontact(false);
                         navigate("/");
                       }}
                       style={{ cursor: "pointer" }}
@@ -300,6 +316,11 @@ function Header() {
                   <li className={shop ? "active" : ""}>
                     <a
                       onClick={() => {
+                        sethome(false);
+                        setshop(true);
+                        setabout(false);
+                        setcontact(false);
+
                         navigate("/shopview");
                       }}
                       style={{ cursor: "pointer" }}
@@ -313,6 +334,10 @@ function Header() {
                   >
                     <a
                       onClick={() => {
+                        sethome(false);
+                        setshop(false);
+                        setabout(true);
+                        setcontact(false);
                         navigate("/about");
                       }}
                       style={{ cursor: "pointer" }}
@@ -326,6 +351,10 @@ function Header() {
                   >
                     <a
                       onClick={() => {
+                        sethome(false);
+                        setshop(false);
+                        setabout(false);
+                        setcontact(true);
                         navigate("/contact");
                       }}
                       style={{ cursor: "pointer" }}
@@ -372,8 +401,7 @@ function Header() {
                       </button>
                       <button
                         onClick={() => {
-                          localStorage.clear();
-                          window.location.reload();
+                          logout();
                         }}
                         style={{
                           position: "relative",
@@ -455,7 +483,7 @@ function Header() {
                             strokeLinejoin="round"
                           ></path>
                         </svg>
-                        <span className="cart-count">0</span>
+                        <span className="cart-count">{cart.length}</span>
                       </a>
 
                       <div className="canvas-overlay"></div>
@@ -472,19 +500,15 @@ function Header() {
                           </a>
                         </div>
                         <div className="products scrollable">
-                          {cartdata.length > 0 ? (
-                            cartdata.map((data, index) => (
+                          {cart.length > 0 ? (
+                            cart.map((data, index) => (
                               <div className="product product-mini" key={index}>
                                 <figure className="product-media">
                                   <a>
-                                    {data.productResponse.productImages &&
-                                    data.productResponse.productImages.length >
-                                      0 ? (
+                                    {data.images[0].imageUrl &&
+                                    data.images[0].imageUrl.length > 0 ? (
                                       <img
-                                        src={
-                                          data.productResponse.productImages[0]
-                                            .imageUrl
-                                        }
+                                        src={data.images[0].imageUrl}
                                         alt="product"
                                         width="84"
                                         height="105"
@@ -501,33 +525,29 @@ function Header() {
                                     title="Remove Product"
                                     className="btn-remove"
                                     onClick={() => {
-                                      handleDelete(
-                                        index,
-                                        data.productResponse.productId,
-                                        data.cartId
-                                      );
+                                      removeFromCart(data.id);
                                     }}
                                   >
                                     <i className="p-icon-times"></i>
-                                    <span className="sr-only">Close</span>
+                                    <span className="sr-only"></span>
                                   </a>
                                 </figure>
                                 <div className="product-detail">
                                   <a className="product-name">
-                                    {data.productResponse.productName}
+                                    {data.productName}
                                   </a>
                                   <div className="price-box">
                                     <span className="product-quantity">
                                       {data.quantity}
                                     </span>
                                     <span className="product-price">
-                                      {data.productResponse.sellingPrice}
+                                      {data.sellingPrice}
                                     </span>
                                   </div>
                                 </div>
                               </div>
                             ))
-                          ) : cartdata.length === 0 ? (
+                          ) : cart.length === 0 ? (
                             <div
                               style={{
                                 marginTop: "2vh",
@@ -826,7 +846,7 @@ function Header() {
                         strokeLinejoin="round"
                       ></path>
                     </svg>
-                    <span className="cart-count">0</span>
+                    <span className="cart-count">{cart.length}</span>
                   </a>
 
                   <div className="canvas-overlay"></div>
@@ -840,19 +860,15 @@ function Header() {
                       </a>
                     </div>
                     <div className="products scrollable">
-                      {cartdata.length > 0 ? (
-                        cartdata.map((data, index) => (
+                      {cart.length > 0 ? (
+                        cart.map((data, index) => (
                           <div className="product product-mini" key={index}>
                             <figure className="product-media">
                               <a>
-                                {data.productResponse.productImages &&
-                                data.productResponse.productImages.length >
-                                  0 ? (
+                                {data.images[0].imageUrl &&
+                                data.images[0].imageUrl.length > 0 ? (
                                   <img
-                                    src={
-                                      data.productResponse.productImages[0]
-                                        .imageUrl
-                                    }
+                                    src={data.images[0].imageUrl}
                                     alt="product"
                                     width="84"
                                     height="105"
@@ -866,11 +882,7 @@ function Header() {
                                 title="Remove Product"
                                 className="btn-remove"
                                 onClick={() => {
-                                  handleDelete(
-                                    index,
-                                    data.productResponse.productId,
-                                    data.cartId
-                                  );
+                                  removeFromCart(data.id);
                                 }}
                               >
                                 <i className="p-icon-times"></i>
@@ -878,15 +890,13 @@ function Header() {
                               </a>
                             </figure>
                             <div className="product-detail">
-                              <a className="product-name">
-                                {data.productResponse.productName}
-                              </a>
+                              <a className="product-name">{data.productName}</a>
                               <div className="price-box">
                                 <span className="product-quantity">
                                   {data.quantity}
                                 </span>
                                 <span className="product-price">
-                                  {data.productResponse.sellingPrice}
+                                  {data.sellingPrice}
                                 </span>
                               </div>
                             </div>
@@ -988,18 +998,6 @@ function Header() {
           </div>
         </div>
       </header>
-
-      {home ? (
-        <Herohome />
-      ) : shop ? (
-        <Heroshop />
-      ) : about ? (
-        <Heroabout />
-      ) : contact ? (
-        <Herocontact />
-      ) : (
-        ""
-      )}
     </>
   );
 }

@@ -6,11 +6,11 @@ const Provider = ({ children }) => {
   const [loggedin, setloggedin] = useState(localStorage.getItem("token"));
   const userid = localStorage.getItem("userid");
   const [id, setid] = useState("");
-  const [home, sethome] = useState(true);
+  const [home, sethome] = useState(false);
   const [shop, setshop] = useState(false);
   const [about, setabout] = useState(false);
   const [contact, setcontact] = useState(false);
-  const [cart, setcart] = useState(false);
+  const [cart, setcart] = useState([]);
   const [productinfo, setproductinfo] = useState("");
   const [isloggedin, setisloggedin] = useState(localStorage.getItem("token"));
   const [heroSilderData, setheroSliderData] = useState({});
@@ -25,6 +25,11 @@ const Provider = ({ children }) => {
         setheroSliderData(res.data.result);
       })
       .catch((err) => {});
+  }, []);
+
+  useEffect(() => {
+    const storedCart = JSON.parse(localStorage.getItem("cartinfo")) || [];
+    setcart(storedCart);
   }, []);
 
   const config = {
@@ -63,15 +68,6 @@ const Provider = ({ children }) => {
       })
       .catch((err) => {});
     //address api
-    axios
-      .get(
-        `${
-          import.meta.env.VITE_URL
-        }/Address/getAddressByUserId/${localStorage.getItem("userid")}`,
-        config
-      )
-      .then((res) => {})
-      .catch((err) => {});
   }, []);
 
   const valuetoshare = {

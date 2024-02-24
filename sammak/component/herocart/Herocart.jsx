@@ -4,9 +4,10 @@ import Header from "../Header";
 import Footer from "../Footer";
 import AllContext from "../../src/Context/Context";
 import { useNavigate } from "react-router-dom";
+import toast, { Toaster } from "react-hot-toast";
 import axios from "axios";
 import Loader from "react-js-loader";
-import { ToastContainer, toast } from "react-toastify";
+
 import "react-toastify/dist/ReactToastify.css";
 import { RotatingLines } from "react-loader-spinner";
 import "../../main.js";
@@ -20,14 +21,13 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 
-function Herocart(props) {
+function Herocart() {
   const [loginuser, setloginuser] = useState({ email: "", password: "" });
   const [registeruser, setregisteruser] = useState({
     emailId: "",
     password: "",
     userName: "",
   });
-  console.log(props);
 
   const [loading, setloading] = useState(false);
   const [addCartLogin, setaddCartLogin] = useState(false);
@@ -38,11 +38,19 @@ function Herocart(props) {
   const [data1, setdata1] = useState("");
   const navigate = useNavigate();
 
+  const [Allproduct, setAllProducts] = useState(
+    JSON.parse(localStorage.getItem("products"))
+  );
+  const [allcart, setallcart] = useState(
+    JSON.parse(localStorage.getItem("cartinfo"))
+  );
+
+  const [localcart, setlocalCart] = useState([]);
+
   useEffect(() => {
-    
     let storedProduct = localStorage.getItem("products");
     let productId = localStorage.getItem("id");
-    
+
     if (storedProduct && productId) {
       let parseProduct = JSON.parse(storedProduct);
       productId = parseInt(productId);
@@ -51,14 +59,8 @@ function Herocart(props) {
       });
 
       setdata(filterproduct);
+      console.log(filterproduct);
     }
-    
-    axios
-      .get(`${import.meta.env.VITE_URL}/Product/post`)
-      .then((res) => {setdata1(res.data.result);localStorage.setItem("products", JSON.stringify(res.data.result));})
-      .catch((err) => {});
-
-
   }, [localStorage.getItem("id")]);
 
   const {
@@ -73,12 +75,13 @@ function Herocart(props) {
     contact,
     setcontact,
     cart,
+    setcart,
     id,
     productinfo,
     isloggedin,
     setid,
   } = useContext(AllContext);
-// authentication
+  // authentication
   const register = () => {
     if (
       registeruser.emailId === "" ||
@@ -161,7 +164,7 @@ function Herocart(props) {
   };
 
   // ends
-  // configuration for api 
+  // configuration for api
   const token = localStorage.getItem("token");
 
   const config = {
@@ -170,7 +173,7 @@ function Herocart(props) {
       Authorization: `Bearer ` + token,
     },
   };
-// ends
+  // ends
 
   const handleAddcart = () => {
     if (!isloggedin) {
@@ -181,7 +184,9 @@ function Herocart(props) {
 
     axios
       .post(
-        `${import.meta.env.VITE_URL}/cart/addToCart/${localStorage.getItem("id")}/${localStorage.getItem("userid")}/${quantity}/${cleaning}`,
+        `${import.meta.env.VITE_URL}/cart/addToCart/${localStorage.getItem(
+          "id"
+        )}/${localStorage.getItem("userid")}/${quantity}/${cleaning}`,
         {},
         config
       )
@@ -246,7 +251,7 @@ function Herocart(props) {
 
   function isTokenExpired(token) {
     const expiration = new Date(token.exp * 1000);
-    return Date.now() >= expiration; //return true or false 
+    return Date.now() >= expiration; //return true or false
   }
 
   function logout() {
@@ -296,550 +301,62 @@ function Herocart(props) {
       window.scrollTo({ top: 100, behavior: "smooth" });
     }
   };
-  const products = JSON.parse(localStorage.getItem("products"));
+
+  const addToCart = (product) => {
+    const existingProduct = cart.find((item) => item.id === product.id);
+
+    if (existingProduct) {
+      // If the product is already in the cart, update quantity
+      updateQuantity(product.id, existingProduct.quantity + quantity);
+      toast.success("Product added", {
+        autoClose: 3000,
+        position: "top-right",
+        hideProgressBar: false,
+        closeOnClick: true,
+      });
+    } else {
+      // If the product is not in the cart, add it
+      setcart([...cart, { ...product, quantity: 1 }]);
+      localStorage.setItem(
+        "cartinfo",
+        JSON.stringify([...cart, { ...product, quantity: quantity }])
+      );
+      toast.success("Product added", {
+        autoClose: 3000,
+        position: "top-right",
+        hideProgressBar: false,
+        closeOnClick: true,
+      });
+    }
+  };
+
+  const updateQuantity = (productId, newQuantity) => {
+    if (cart) {
+      const updatedCart = cart.map((item) => {
+        if (item.id === productId) {
+          return {
+            ...item,
+            quantity: newQuantity,
+          };
+        }
+        return item;
+      });
+      setcart(updatedCart);
+      localStorage.setItem("cartinfo", JSON.stringify(updatedCart));
+    }
+  };
+  const removeFromCart = (productId) => {
+    setcart((prevCart) => prevCart.filter((item) => item.id !== productId));
+  };
 
   return (
     <>
-      <header className="header">
-        <div className="header-top">
-          <div className="container">
-            <div className="header-left">
-              <a href="tel:#" className="call">
-                <i className="p-icon-phone-solid"></i>
-                <span>+456 789 000</span>
-              </a>
-              <span className="divider"></span>
-              <a href="contact.html" className="contact">
-                <i className="p-icon-map"></i>
-                <span>Saudi Arabia,Jazan, KSA</span>
-              </a>
-            </div>
-            <div className="header-right">
-              <div className="dropdown switcher">
-                <a href="#currency">USD</a>
-                <ul className="dropdown-box">
-                  <li>
-                    <a href="#USD">USD</a>
-                  </li>
-                  <li>
-                    <a href="#EUR">EUR</a>
-                  </li>
-                </ul>
-              </div>
-
-              <div className="dropdown switcher">
-                <a href="#language">
-                  <img
-                    src="images/flagus.jpg"
-                    width="14"
-                    height="10"
-                    className="mr-1"
-                    alt="flagus"
-                  />
-                  ENG
-                </a>
-                <ul className="dropdown-box">
-                  <li>
-                    <a href="#USD">
-                      <img
-                        src="images/flagus.jpg"
-                        width="14"
-                        height="10"
-                        className="mr-1"
-                        alt="flagus"
-                      />
-                      ENG
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#EUR">
-                      <img
-                        src="images/flagfr.jpg"
-                        width="14"
-                        height="10"
-                        className="mr-1"
-                        alt="flagfr"
-                      />
-                      FRH
-                    </a>
-                  </li>
-                </ul>
-              </div>
-              <span className="divider"></span>
-
-              <div className="social-links">
-                <a
-                  href="#"
-                  className="social-link fab fa-facebook-f"
-                  title="Facebook"
-                ></a>
-                <a
-                  href="#"
-                  className="social-link fab fa-twitter"
-                  title="Twitter"
-                ></a>
-                <a
-                  href="#"
-                  className="social-link fab fa-pinterest"
-                  title="Pinterest"
-                ></a>
-                <a
-                  href="#"
-                  className="social-link fab fa-linkedin-in"
-                  title="Linkedin"
-                ></a>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="header-middle has-center sticky-header fix-top sticky-content">
-          <div className="container">
-            <div className="header-left">
-              <a href="#" className="mobile-menu-toggle" title="Mobile Menu">
-                <i className="p-icon-bars-solid"></i>
-              </a>
-              <a href="/" className="logo">
-                <img
-                  src="/images/logo.png"
-                  alt="logo"
-                  width="171"
-                  height="41"
-                />
-              </a>
-            </div>
-            <div className="header-center">
-              <nav className="main-nav">
-                <ul className="menu">
-                  <li className={""}>
-                    <a
-                      onClick={() => {
-                        navigate("/");
-                      }}
-                      style={{ cursor: "pointer" }}
-                    >
-                      Home
-                    </a>
-                  </li>
-                  <li className={"active"}>
-                    <a
-                      onClick={() => {
-                        navigate("/shopview");
-                      }}
-                      style={{ cursor: "pointer" }}
-                    >
-                      Shop
-                    </a>
-                  </li>
-                  <li className={about ? "active" : ""}>
-                    <a
-                      onClick={() => {
-                        navigate("/about");
-                      }}
-                      style={{ cursor: "pointer" }}
-                    >
-                      About Us
-                    </a>
-                  </li>
-                  <li className={contact ? "active" : ""}>
-                    <a
-                      onClick={() => {
-                        navigate("/contact");
-                      }}
-                      style={{ cursor: "pointer" }}
-                    >
-                      Contact Us
-                    </a>
-                  </li>
-                </ul>
-              </nav>
-            </div>
-            <div className="header-right">
-              <div
-                className={`dropdown login-dropdown off-canvas ${
-                  addCartLogin ? "opened" : ""
-                } off-canvas`}
-              >
-                {loggedin ? (
-                  <button
-                    onClick={() => {
-                      localStorage.removeItem("token");
-                      localStorage.removeItem("orders");
-                      localStorage.removeItem("userid");
-                      localStorage.removeItem("cart");
-                      window.location.reload();
-                    }}
-                    style={{
-                      position: "relative",
-                      left: "-1vh",
-                      cursor: "pointer",
-                    }}
-                  >
-                    Logout
-                  </button>
-                ) : (
-                  <a
-                    className="login-toggle "
-                    href=""
-                    data-toggle="login-modal"
-                  >
-                    <i className="p-icon-user-solid mr-2"></i>
-                    <span className="">login/Signup</span>
-                  </a>
-                )}
-
-                <div
-                  className="canvas-overlay"
-                  onClick={() => setaddCartLogin(false)}
-                ></div>
-                <a
-                  href="#"
-                  className="btn-close"
-                  onClick={() => setaddCartLogin(false)}
-                ></a>
-                <div className="dropdown-box scrollable">
-                  <div className="login-popup">
-                    <div className="form-box">
-                      <div className="tab tab-nav-underline tab-nav-boxed">
-                        <ToastContainer />
-                        <ul className="nav nav-tabs nav-fill mb-4">
-                          <li className="nav-item">
-                            <a
-                              className="nav-link active lh-1 ls-normal"
-                              href="#signin"
-                            >
-                              Login
-                            </a>
-                          </li>
-                          <li className="nav-item">
-                            <a
-                              className="nav-link lh-1 ls-normal"
-                              href="#register"
-                            >
-                              Register
-                            </a>
-                          </li>
-                        </ul>
-                        <div className="tab-content">
-                          <div className="tab-pane active" id="signin">
-                            <form
-                              onSubmit={(e) => {
-                                e.preventDefault();
-                                setloading(true);
-                                login();
-                              }}
-                            >
-                              <div className="form-group">
-                                <input
-                                  type="text"
-                                  id="singin-email"
-                                  name="singin-email"
-                                  placeholder="Username or Email Address"
-                                  onInput={(e) => {
-                                    setloginuser({
-                                      ...loginuser,
-                                      email: e.target.value,
-                                    });
-                                  }}
-                                />
-                                <input
-                                  type="password"
-                                  id="singin-password"
-                                  name="singin-password"
-                                  placeholder="Password"
-                                  required=""
-                                  onInput={(e) => {
-                                    setloginuser({
-                                      ...loginuser,
-                                      password: e.target.value,
-                                    });
-                                  }}
-                                />
-                              </div>
-                              <div className="form-footer">
-                                <div className="form-checkbox">
-                                  <input
-                                    type="checkbox"
-                                    id="signin-remember"
-                                    name="signin-remember"
-                                  />
-                                  <label htmlFor="signin-remember">
-                                    Remember me
-                                  </label>
-                                </div>
-                                <a href="/forgotpassword" className="lost-link">
-                                  Lost your password?
-                                </a>
-                              </div>
-                              <button
-                                className="btn btn-dark btn-block"
-                                type="submit"
-                              >
-                                Login
-                                {loading && (
-                                  <span
-                                    style={{
-                                      position: "relative",
-                                      left: "4vh",
-                                      top: "0.5vh",
-                                    }}
-                                  >
-                                    <RotatingLines
-                                      visible={true}
-                                      height="20"
-                                      width="25"
-                                      color="	#87CEEB"
-                                      strokeWidth="5"
-                                      animationDuration="0.75"
-                                      ariaLabel="rotating-lines-loading"
-                                      wrapperStyle={{}}
-                                      wrapperClass=""
-                                    />
-                                  </span>
-                                )}
-                              </button>
-                            </form>
-                          </div>
-                          <div className="tab-pane" id="register">
-                            <form
-                              onSubmit={(e) => {
-                                e.preventDefault();
-                                setloading(true);
-                                register();
-                              }}
-                            >
-                              <div className="form-group">
-                                <input
-                                  type="text"
-                                  id="register-user"
-                                  name="register-user"
-                                  placeholder="Username"
-                                  required=""
-                                  onInput={(e) => {
-                                    setregisteruser({
-                                      ...registeruser,
-                                      userName: e.target.value,
-                                    });
-                                  }}
-                                />
-                                <input
-                                  type="email"
-                                  id="register-email"
-                                  name="register-email"
-                                  placeholder="Your Email Address"
-                                  required=""
-                                  onInput={(e) => {
-                                    setregisteruser({
-                                      ...registeruser,
-                                      emailId: e.target.value,
-                                    });
-                                  }}
-                                />
-                                <input
-                                  type="password"
-                                  id="register-password"
-                                  name="register-password"
-                                  placeholder="Password"
-                                  required=""
-                                  onInput={(e) => {
-                                    setregisteruser({
-                                      ...registeruser,
-                                      password: e.target.value,
-                                    });
-                                  }}
-                                />
-                              </div>
-
-                              <div className="form-footer mb-5">
-                                <div className="form-checkbox">
-                                  <input
-                                    type="checkbox"
-                                    id="register-agree"
-                                    name="register-agree"
-                                    required={true}
-                                  />
-                                  <label htmlFor="register-agree">
-                                    I agree to the privacy policy
-                                  </label>
-                                </div>
-                              </div>
-                              <button
-                                className="btn btn-dark btn-block"
-                                type="submit"
-                              >
-                                Register
-                                {loading && (
-                                  <span
-                                    style={{
-                                      position: "relative",
-                                      left: "4vh",
-                                      top: "0.5vh",
-                                    }}
-                                  >
-                                    <RotatingLines
-                                      visible={true}
-                                      height="20"
-                                      width="25"
-                                      color="	#87CEEB"
-                                      strokeWidth="5"
-                                      animationDuration="0.75"
-                                      ariaLabel="rotating-lines-loading"
-                                      wrapperStyle={{}}
-                                      wrapperClass=""
-                                    />
-                                  </span>
-                                )}
-                              </button>
-                            </form>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <button
-                      title="Close (Esc)"
-                      type="button"
-                      className="mfp-close"
-                    >
-                      <span>×</span>
-                    </button>
-                  </div>
-                </div>
-              </div>
-
-              {loggedin && (
-                <div className="dropdown cart-dropdown off-canvas mr-0 mr-lg-2">
-                  <a href="#" className="cart-toggle link">
-                    <i className="p-icon-cart-solid">
-                      <span className="cart-count">
-                        {cartdata.length > 0 ? cartdata.length : 0}
-                      </span>
-                    </i>
-                  </a>
-                  <div className="canvas-overlay"></div>
-                  <div className="dropdown-box">
-                    <div className="canvas-header">
-                      <h4 className="canvas-title">Shopping Cart</h4>
-                      <a href="#" className="btn btn-dark btn-link btn-close">
-                        close<i className="p-icon-arrow-long-right"></i>
-                        <span className="sr-only">Cart</span>
-                      </a>
-                    </div>
-                    <div className="products scrollable">
-                      {cartdata.length > 0 ? (
-                        cartdata.map((data, index) => (
-                          <div className="product product-mini" key={index}>
-                            <figure className="product-media">
-                              <a>
-                                {data.productResponse.productImages &&
-                                data.productResponse.productImages.length >
-                                  0 ? (
-                                  <img
-                                    src={
-                                      data.productResponse.productImages[0]
-                                        .imageUrl
-                                    }
-                                    alt="product"
-                                    width="84"
-                                    height="105"
-                                    style={{ height: "105px", width: "84px" }}
-                                  />
-                                ) : (
-                                  <div>No Image Available</div>
-                                )}
-                              </a>
-                              <a
-                                title="Remove Product"
-                                className="btn-remove"
-                                onClick={() => {
-                                  handleDelete(
-                                    index,
-                                    data.productResponse.productId,
-                                    data.cartId
-                                  );
-                                }}
-                              >
-                                <i className="p-icon-times"></i>
-                                <span className="sr-only">Close</span>
-                              </a>
-                            </figure>
-                            <div className="product-detail">
-                              <a className="product-name">
-                                {data.productResponse.productName}
-                              </a>
-                              <div className="price-box">
-                                <span className="product-quantity">
-                                  {data.quantity}
-                                </span>
-                                <span className="product-price">
-                                  {data.productResponse.sellingPrice}
-                                </span>
-                              </div>
-                            </div>
-                          </div>
-                        ))
-                      ) : cartdata.length === 0 ? (
-                        <div
-                          style={{
-                            marginTop: "2vh",
-                            marginLeft: "5vw",
-                          }}
-                        >
-                          No items are present
-                        </div>
-                      ) : (
-                        <span style={{ position: "relative", top: "2vh" }}>
-                          {" "}
-                          <Loader
-                            type="bubble-scale"
-                            bgColor={"#163b4d"}
-                            color={"blue"}
-                            size={30}
-                          />
-                        </span>
-                      )}
-                    </div>
-
-                    <div className="cart-total">
-                      <label>Subtotal:</label>
-                      <span className="price">
-                        {" "}
-                        {cartdata.length > 0 &&
-                          cartdata.reduce((acc, curr) => {
-                            return acc + curr.subtotal;
-                          }, 0)}{" "}
-                        SAR
-                      </span>
-                    </div>
-
-                    <div className="cart-action">
-                      <a
-                        className="btn btn-outline btn-dim mb-2"
-                        href="/viewcart"
-                      >
-                        View Cart
-                      </a>
-                      <a href="/checkout" className="btn btn-dim">
-                        <span>Go To Checkout</span>
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              )}
-            </div>
-            {loggedin && (
-              <img
-                style={{ height: "40px" }}
-                src="images/settingiconpng.png"
-                alt="img"
-                className="settingimg"
-                onClick={() => {
-                  navigate("/setting");
-                }}
-              />
-            )}
-          </div>
-        </div>
-      </header>
+      <Header
+        homeValue={false}
+        shopValue={true}
+        aboutValue={false}
+        contactValue={false}
+      />
 
       <main className="main single-product">
         <nav className="breadcrumb-nav">
@@ -955,7 +472,9 @@ function Herocart(props) {
                       <button
                         className="btn-cart ls-normal font-weight-semi-bold"
                         disabled={false}
-                        onClick={handleAddcart}
+                        onClick={() => {
+                          addToCart(data[0]);
+                        }}
                       >
                         <i className="p-icon-cart-solid"></i>ADD TO CART
                       </button>
@@ -989,7 +508,7 @@ function Herocart(props) {
             <div className="row tab-pane active">
               <Swiper
                 modules={[Virtual, Navigation, Pagination]}
-                slidesPerView={1}
+                slidesPerView={3}
                 breakpoints={{
                   640: {
                     slidesPerView: 2,
@@ -1007,87 +526,85 @@ function Herocart(props) {
                 navigation={true}
                 virtual
               >
-                {data1.length > 0 && Array.isArray(data1) ? (
-                  data1
-                    .map((field, index) => (
-                      <SwiperSlide key={field} virtualIndex={index}>
-                        <div
-                          className="product-wrap shop-home col "
-                          style={{
-                            display: "flex",
-                            flexDirection: "column",
-                            alignItems: "center",
-                            cursor: "pointer",
-                          }}
-                          key={index}
-                          onClick={() => {
-                            setid(field.id);
-                            localStorage.setItem("id", field.id);
-                            onCart();
-                          }}
+                {Allproduct.length > 0 && Array.isArray(Allproduct) ? (
+                  Allproduct.map((field, index) => (
+                    <SwiperSlide key={field} virtualIndex={index}>
+                      <div
+                        className="product-wrap shop-home col "
+                        style={{
+                          display: "flex",
+                          flexDirection: "column",
+                          alignItems: "center",
+                          cursor: "pointer",
+                        }}
+                        key={index}
+                        onClick={() => {
+                          setid(field.id);
+                          localStorage.setItem("id", field.id);
+                          onCart();
+                        }}
+                      >
+                        <figure
+                          className="product-media"
+                          style={{ cursor: "pointer" }}
                         >
-                          <figure
-                            className="product-media"
-                            style={{ cursor: "pointer" }}
-                          >
-                            <img
-                              src={
-                                field.images.length > 0
-                                  ? field.images[0].imageUrl
-                                  : ""
-                              }
-                              alt="product"
-                              style={{ width: "295", height: "369" }}
-                            />
+                          <img
+                            src={
+                              field.images.length > 0
+                                ? field.images[0].imageUrl
+                                : ""
+                            }
+                            alt="product"
+                            style={{ width: "295", height: "369" }}
+                          />
 
-                            {/* Product actions */}
-                          </figure>
-                          <div className="product-details">
-                            <div className="ratings-container">
-                              <div className="d-flex align-items-center">
-                                <div className="ratings-full">
-                                  <span
-                                    className="ratings"
-                                    style={{ width: "60%" }}
-                                  ></span>
-                                  <span className="tooltiptext tooltip-top"></span>
-                                </div>
-                                <a
-                                  href="javascript:void(0);"
-                                  className="rating-reviews"
-                                >
-                                  ({Math.floor(Math.random() * 20 + 5)})
-                                </a>
+                          {/* Product actions */}
+                        </figure>
+                        <div className="product-details">
+                          <div className="ratings-container">
+                            <div className="d-flex align-items-center">
+                              <div className="ratings-full">
+                                <span
+                                  className="ratings"
+                                  style={{ width: "60%" }}
+                                ></span>
+                                <span className="tooltiptext tooltip-top"></span>
                               </div>
-                              <span className="product-price">
-                                <del className="old-price">
-                                  {field.originalPrice} SAR
-                                </del>
-                                <ins
-                                  className="new-price"
-                                  style={{ fontWeight: "bold" }}
-                                >
-                                  {field.sellingPrice} SAR
-                                </ins>
-                              </span>
-                            </div>
-                            <div className="product-name-container">
-                              <h5
-                                className="product-name"
-                                style={{
-                                  color: "#163b4d",
-                                  fontWeight: "600",
-                                  fontSize: "1.3em",
-                                }}
+                              <a
+                                href="javascript:void(0);"
+                                className="rating-reviews"
                               >
-                                {field.productName}
-                              </h5>
+                                ({Math.floor(Math.random() * 20 + 5)})
+                              </a>
                             </div>
+                            <span className="product-price">
+                              <del className="old-price">
+                                {field.originalPrice} SAR
+                              </del>
+                              <ins
+                                className="new-price"
+                                style={{ fontWeight: "bold" }}
+                              >
+                                {field.sellingPrice} SAR
+                              </ins>
+                            </span>
+                          </div>
+                          <div className="product-name-container">
+                            <h5
+                              className="product-name"
+                              style={{
+                                color: "#163b4d",
+                                fontWeight: "600",
+                                fontSize: "1.3em",
+                              }}
+                            >
+                              {field.productName}
+                            </h5>
                           </div>
                         </div>
-                      </SwiperSlide>
-                    ))
-                    .slice(0, 4)
+                      </div>
+                    </SwiperSlide>
+                  )).slice(0, 4)
                 ) : (
                   <div style={{ marginLeft: "30vw" }}>
                     <Loader
@@ -1128,6 +645,7 @@ function Herocart(props) {
           </div>
         </div>
       </main>
+      <Toaster />
       <Footer />
     </>
   );

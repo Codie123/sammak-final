@@ -3,6 +3,7 @@ import "../../main.js";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
+import Header from "../Header.jsx";
 function CheckoutMain() {
   const navigate = useNavigate();
 
@@ -42,6 +43,8 @@ function CheckoutMain() {
 
   return (
     <>
+      <Header homeValue={false} />
+
       <main className="main account-page">
         <div className="page-header" style={{ backgroundColor: "#f9f8f4" }}>
           <h1 className="page-title">My Account</h1>

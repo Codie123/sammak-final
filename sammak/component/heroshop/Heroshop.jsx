@@ -1,13 +1,12 @@
 import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
+import toast, { Toaster } from "react-hot-toast";
 import AllContext from "../../src/Context/Context";
 import Herocart from "../herocart/Herocart";
 import { useNavigate, useLocation } from "react-router-dom";
 import Loader from "react-js-loader";
 import style from "./Heroshop.module.css";
 import "../../main.js";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
 
@@ -23,6 +22,7 @@ import {
 function Heroshop() {
   const [data, setdata] = useState("");
   const [addCartLogin, setaddCartLogin] = useState(false);
+  const [quantity, setquantity] = useState(1);
   //location
   const location = useLocation();
   const params = new URLSearchParams(location.search);
@@ -37,6 +37,9 @@ function Heroshop() {
   const [currentPage, setCurrentPage] = useState(page);
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const [Allproduct, setallproduct] = useState(
+    JSON.parse(localStorage.getItem("products"))
+  );
 
   //pagination ends
   const {
@@ -67,9 +70,7 @@ function Heroshop() {
     axios
       .get(`${import.meta.env.VITE_URL}/Product/post`)
       .then((res) => {
-        setdata(res.data.result);
         setproductinfo(res.data.result);
-        localStorage.setItem("products", JSON.stringify(res.data.result));
       })
       .catch((err) => {});
   }, []);
@@ -139,13 +140,13 @@ function Heroshop() {
 
   const handleNextPage = () => {
     const nextPage = currentPage + 1;
-    if (data.length / itemsPerPage > nextPage) {
+    if (Allproduct.length / itemsPerPage > nextPage) {
       setCurrentPage(nextPage);
       navigate(`/shopview/?page=${nextPage}`);
       window.scrollTo({ top: 400, behavior: "smooth" });
     }
   };
-  
+
   const handlePreviousPage = () => {
     const prevPage = currentPage - 1;
     if (prevPage >= 1) {
@@ -154,21 +155,20 @@ function Heroshop() {
       window.scrollTo({ top: 400, behavior: "smooth" });
     }
   };
-  
-  const lowtohigh = () => {
 
+  const lowtohigh = () => {
     let sort =
-      productinfo.length > 0 &&
-      [...productinfo].sort((a, b) => a.sellingPrice - b.sellingPrice);
-    setdata(sort);
+      Allproduct.length > 0 &&
+      [...Allproduct].sort((a, b) => a.sellingPrice - b.sellingPrice);
+    setallproduct(sort);
     console.log(sort);
   };
 
   const hightolow = () => {
     let sort =
-      productinfo.length > 0 &&
-      [...productinfo].sort((a, b) => b.sellingPrice - a.sellingPrice);
-    setdata(sort);
+      Allproduct.length > 0 &&
+      [...Allproduct].sort((a, b) => b.sellingPrice - a.sellingPrice);
+    setallproduct(sort);
   };
 
   const [selectedOption, setSelectedOption] = useState("");
@@ -183,6 +183,49 @@ function Heroshop() {
       hightolow();
     } else if (selectedValue === "lowToHigh") {
       lowtohigh();
+    }
+  };
+
+  const addToCart = (product) => {
+    const existingProduct = cart.find((item) => item.id === product.id);
+
+    if (existingProduct) {
+      // If the product is already in the cart, update quantity
+      updateQuantity(product.id, existingProduct.quantity + quantity);
+      toast.success("Product added", {
+        autoClose: 3000,
+        position: "top-right",
+        hideProgressBar: false,
+        closeOnClick: true,
+      });
+    } else {
+      // If the product is not in the cart, add it
+      setcart([...cart, { ...product, quantity: 1 }]);
+      localStorage.setItem(
+        "cartinfo",
+        JSON.stringify([...cart, { ...product, quantity: quantity }])
+      );
+      toast.success("Product added", {
+        autoClose: 3000,
+        position: "top-right",
+        icon: "👏",
+      });
+    }
+  };
+
+  const updateQuantity = (productId, newQuantity) => {
+    if (cart) {
+      const updatedCart = cart.map((item) => {
+        if (item.id === productId) {
+          return {
+            ...item,
+            quantity: newQuantity,
+          };
+        }
+        return item;
+      });
+      setcart(updatedCart);
+      localStorage.setItem("cartinfo", JSON.stringify(updatedCart));
     }
   };
 
@@ -232,7 +275,7 @@ function Heroshop() {
         <div className="container">
           <CRow xs={{ cols: 1 }} className="g-4">
             {/* Product 1 */}
-            {data.length === 0 && (
+            {Allproduct.length === 0 && (
               <div className={style.beforeload}>
                 {" "}
                 <div className={style.loader_content}>
@@ -246,78 +289,76 @@ function Heroshop() {
                 </div>
               </div>
             )}
-            {data.length > 0 && Array.isArray(data) ? (
-              data
-                .map((field, index) => (
-                  <CCol className="col  col-md-6 col-lg-4 col-xl-3" key={index}>
-                    <CCard className="">
-                      <div
-                        className="card-img-container"
-                        onClick={() => {
-                          setid(field.id);
-                          localStorage.setItem("id", field.id);
-                          onCart();
-                        }}
-                      >
-                        <div className="card-img-container">
-                          <LazyLoadImage
-                            alt="product"
-                            className="card-img"
-                            effect="blur"
-                            src={
-                              field.images.length > 0
-                                ? field.images[0].imageUrl
-                                : "~"
-                            }
-                          />
-                        </div>
+            {Allproduct.length > 0 && Array.isArray(Allproduct) ? (
+              Allproduct.map((field, index) => (
+                <CCol className="col  col-md-6 col-lg-4 col-xl-3" key={index}>
+                  <CCard className="">
+                    <div
+                      className="card-img-container"
+                      onClick={() => {
+                        setid(field.id);
+                        localStorage.setItem("id", field.id);
+                        onCart();
+                      }}
+                    >
+                      <div className="card-img-container">
+                        <LazyLoadImage
+                          alt="product"
+                          className="card-img"
+                          effect="blur"
+                          src={
+                            field.images.length > 0
+                              ? field.images[0].imageUrl
+                              : "~"
+                          }
+                        />
                       </div>
+                    </div>
 
-                      <CCardBody>
-                        <div className="ratings-container">
-                          <div className="d-flex align-items-center">
-                            <div className="ratings-full">
-                              <span
-                                className="ratings"
-                                style={{ width: "60%" }}
-                              ></span>
-                              <span className="tooltiptext tooltip-top">
-                                3.00
-                              </span>
-                            </div>
-                            <a className="rating-reviews">
-                              ({Math.floor(Math.random() * 20 + 5)})
-                            </a>
+                    <CCardBody>
+                      <div className="ratings-container">
+                        <div className="d-flex align-items-center">
+                          <div className="ratings-full">
+                            <span
+                              className="ratings"
+                              style={{ width: "60%" }}
+                            ></span>
+                            <span className="tooltiptext tooltip-top">
+                              3.00
+                            </span>
                           </div>
-                          <span className="product-price">
-                            <del className="old-price">
-                              SAR {field.originalPrice}
-                            </del>
-                            <ins
-                              className="new-price"
-                              style={{ fontWeight: "bold" }}
-                            >
-                              SAR {field.sellingPrice}
-                            </ins>
-                          </span>
-                        </div>
-                        <CCardTitle>{field.productName}</CCardTitle>
-                        <div className="btn-cnt">
-                          <a
-                            className="buy-btn"
-                            onClick={() => {
-                              localStorage.setItem("id", field.id);
-                              handleAddcart();
-                            }}
-                          >
-                            Add To Cart
+                          <a className="rating-reviews">
+                            ({Math.floor(Math.random() * 20 + 5)})
                           </a>
                         </div>
-                      </CCardBody>
-                    </CCard>
-                  </CCol>
-                ))
-                .slice(indexOfFirstItem, indexOfLastItem)
+                        <span className="product-price">
+                          <del className="old-price">
+                            SAR {field.originalPrice}
+                          </del>
+                          <ins
+                            className="new-price"
+                            style={{ fontWeight: "bold" }}
+                          >
+                            SAR {field.sellingPrice}
+                          </ins>
+                        </span>
+                      </div>
+                      <CCardTitle>{field.productName}</CCardTitle>
+                      <div className="btn-cnt">
+                        <a
+                          className="buy-btn"
+                          onClick={() => {
+                            localStorage.setItem("id", field.id);
+                            addToCart(field);
+                          }}
+                        >
+                          Add To Cart
+                        </a>
+                      </div>
+                    </CCardBody>
+                  </CCard>
+                </CCol>
+              )).slice(indexOfFirstItem, indexOfLastItem)
             ) : (
               <div className={style.loader_content}>
                 {" "}
@@ -331,7 +372,7 @@ function Heroshop() {
             )}
           </CRow>
         </div>
-        {data.length <= itemsPerPage ? (
+        {Allproduct.length <= itemsPerPage ? (
           ""
         ) : (
           <div className="d-flex align-items-center justify-content-end gap-2 cuz-pag-btn mr-4">
@@ -357,6 +398,7 @@ function Heroshop() {
         )}
       </div>
       {/* ends */}
+      <Toaster />
     </main>
   );
 }
