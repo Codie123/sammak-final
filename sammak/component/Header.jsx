@@ -301,12 +301,12 @@ function Header({ homeValue, shopValue, contactValue, aboutValue }) {
                 <ul className="menu">
                   <li className={home ? "active" : ""}>
                     <a
+                      href="/"
                       onClick={() => {
                         sethome(true);
                         setshop(false);
                         setabout(false);
                         setcontact(false);
-                        navigate("/");
                       }}
                       style={{ cursor: "pointer" }}
                     >
@@ -315,13 +315,12 @@ function Header({ homeValue, shopValue, contactValue, aboutValue }) {
                   </li>
                   <li className={shop ? "active" : ""}>
                     <a
+                      href="/shopview"
                       onClick={() => {
                         sethome(false);
                         setshop(true);
                         setabout(false);
                         setcontact(false);
-
-                        navigate("/shopview");
                       }}
                       style={{ cursor: "pointer" }}
                     >
@@ -333,12 +332,12 @@ function Header({ homeValue, shopValue, contactValue, aboutValue }) {
                     className={about ? "active" : ""}
                   >
                     <a
+                      href="/about"
                       onClick={() => {
                         sethome(false);
                         setshop(false);
                         setabout(true);
                         setcontact(false);
-                        navigate("/about");
                       }}
                       style={{ cursor: "pointer" }}
                     >
@@ -350,12 +349,12 @@ function Header({ homeValue, shopValue, contactValue, aboutValue }) {
                     className={contact ? "active" : ""}
                   >
                     <a
+                      href="/contact"
                       onClick={() => {
                         sethome(false);
                         setshop(false);
                         setabout(false);
                         setcontact(true);
-                        navigate("/contact");
                       }}
                       style={{ cursor: "pointer" }}
                     >
@@ -423,7 +422,10 @@ function Header({ homeValue, shopValue, contactValue, aboutValue }) {
                       }}
                     >
                       {" "}
-                      <a className="login-toggle" data-toggle="login-modal">
+                      <a
+                        className="login-toggle opened"
+                        data-toggle="login-modal"
+                      >
                         {/* <a className="lg-btn" >Login</a>
 
                         <a className="lg-btn" >Sign Up</a> */}
@@ -573,9 +575,9 @@ function Header({ homeValue, shopValue, contactValue, aboutValue }) {
                           <label>Total:</label>
                           <span className="price">
                             {" "}
-                            {cartdata.length > 0 &&
-                              cartdata.reduce((acc, curr) => {
-                                return acc + curr.subtotal;
+                            {cart.length > 0 &&
+                              cart.reduce((acc, curr) => {
+                                return acc + curr.quantity * curr.sellingPrice;
                               }, 0)}{" "}
                             SAR
                           </span>
@@ -584,18 +586,11 @@ function Header({ homeValue, shopValue, contactValue, aboutValue }) {
                         <div className="cart-action">
                           <a
                             className="btn btn-outline btn-dim mb-2"
-                            onClick={() => {
-                              navigate("/viewcart");
-                            }}
+                            href="/viewcart"
                           >
                             View Cart
                           </a>
-                          <a
-                            onClick={() => {
-                              navigate("/checkout");
-                            }}
-                            className="btn btn-dim"
-                          >
+                          <a href="/checkout" className="btn btn-dim">
                             <span>Go To Checkout</span>
                           </a>
                         </div>
@@ -855,7 +850,7 @@ function Header({ homeValue, shopValue, contactValue, aboutValue }) {
                     <div className="canvas-header">
                       <h4 className="canvas-title">Shopping Cart</h4>
                       <a href="#" className="btn btn-dark btn-link btn-close">
-                        close<i className="p-icon-arrow-long-right"></i>
+                        <i className="p-icon-arrow-long-right"></i>
                         <span className="sr-only">Cart</span>
                       </a>
                     </div>
@@ -886,7 +881,6 @@ function Header({ homeValue, shopValue, contactValue, aboutValue }) {
                                 }}
                               >
                                 <i className="p-icon-times"></i>
-                                <span className="sr-only">Close</span>
                               </a>
                             </figure>
                             <div className="product-detail">
@@ -928,9 +922,9 @@ function Header({ homeValue, shopValue, contactValue, aboutValue }) {
                       <label>Total:</label>
                       <span className="price">
                         {" "}
-                        {cartdata.length > 0 &&
-                          cartdata.reduce((acc, curr) => {
-                            return acc + curr.subtotal;
+                        {cart.length > 0 &&
+                          cart.reduce((acc, curr) => {
+                            return acc + curr.quantity * curr.sellingPrice;
                           }, 0)}{" "}
                         SAR
                       </span>

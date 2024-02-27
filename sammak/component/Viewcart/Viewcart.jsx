@@ -62,6 +62,16 @@ function Viewcart() {
   } = useContext(AllContext);
 
   //
+  let cartmin = cart.reduce((acc, curr) => {
+    let data = [
+      {
+        cleaningType: curr.smallDescription,
+        id: curr.id,
+        quantity: curr.quantity,
+      },
+    ];
+    return acc.concat(data);
+  }, []);
 
   //
 
@@ -107,6 +117,25 @@ function Viewcart() {
   // get items for the cart
 
   const handlecheckout = () => {
+    axios
+      .post(
+        `${import.meta.env.VITE_URL}/cart/addListToCart`,
+        contactData,
+        config
+      )
+      .then((res) => {
+        if (res.data.status === 200) {
+          toast.success("Comment Sent Successfully ", {
+            autoClose: 2000,
+            position: "top-center",
+          });
+          setTimeout(() => {
+            window.location.reload();
+          }, 2000);
+        }
+      })
+      .catch((err) => {});
+
     navigate("/checkout");
   };
 
@@ -120,6 +149,7 @@ function Viewcart() {
 
   return (
     <>
+      <ToastContainer />
       <Header homeValue={false} />
 
       <main className="main cart">

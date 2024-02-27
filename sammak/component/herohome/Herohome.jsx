@@ -33,7 +33,7 @@ function Herohome() {
   }, []);
 
   const onCart = () => {
-    navigate("/shop");
+    window.location.href = "/shop";
   };
   let recentItems = localStorage.getItem("recentItems")
     ? JSON.parse(localStorage.getItem("recentItems"))

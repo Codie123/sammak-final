@@ -28,15 +28,7 @@ function CheckoutMain() {
       })
       .catch((err) => {});
     //address api
-    axios
-      .get(
-        `${
-          import.meta.env.VITE_URL
-        }/Address/getAddressByUserId/${localStorage.getItem("userid")}`,
-        config
-      )
-      .then((res) => {})
-      .catch((err) => {});
+   
   }, []);
 
   let orders = JSON.parse(localStorage.getItem("orders"));

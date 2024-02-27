@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useMemo } from "react";
 import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
 import AllContext from "../../src/Context/Context";
@@ -19,11 +19,11 @@ import {
   CCol,
   CRow,
 } from "@coreui/react";
+
 function Heroshop() {
   const [data, setdata] = useState("");
   const [addCartLogin, setaddCartLogin] = useState(false);
   const [quantity, setquantity] = useState(1);
-  //location
   const location = useLocation();
   const params = new URLSearchParams(location.search);
   let page = params.get("page");
@@ -32,16 +32,12 @@ function Heroshop() {
     page = 1;
   }
 
-  //paginaton
   const itemsPerPage = 12;
   const [currentPage, setCurrentPage] = useState(page);
+  const [selectedOption, setSelectedOption] = useState("");
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const [Allproduct, setallproduct] = useState(
-    JSON.parse(localStorage.getItem("products"))
-  );
 
-  //pagination ends
   const {
     id,
     isloggedin,
@@ -58,14 +54,13 @@ function Heroshop() {
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
 
-  //location
-
   const config = {
     headers: {
       Accept: "*/*",
-      Authorization: `Bearer ` + token,
+      Authorization: `Bearer ${token}`,
     },
   };
+
   useEffect(() => {
     axios
       .get(`${import.meta.env.VITE_URL}/Product/post`)
@@ -88,6 +83,7 @@ function Heroshop() {
   const onCart = () => {
     window.location.href = "/shop";
   };
+
   const handleAddcart = () => {
     if (!isloggedin) {
       window.scrollTo({ top: 0, behavior: "smooth" });
@@ -139,8 +135,10 @@ function Heroshop() {
   };
 
   const handleNextPage = () => {
+    const totalPages = Math.ceil(productinfo.length / itemsPerPage);
     const nextPage = currentPage + 1;
-    if (Allproduct.length / itemsPerPage > nextPage) {
+
+    if (nextPage <= totalPages) {
       setCurrentPage(nextPage);
       navigate(`/shopview/?page=${nextPage}`);
       window.scrollTo({ top: 400, behavior: "smooth" });
@@ -157,28 +155,21 @@ function Heroshop() {
   };
 
   const lowtohigh = () => {
-    let sort =
-      Allproduct.length > 0 &&
-      [...Allproduct].sort((a, b) => a.sellingPrice - b.sellingPrice);
-    setallproduct(sort);
-    console.log(sort);
+    setproductinfo(
+      [...productinfo].sort((a, b) => a.sellingPrice - b.sellingPrice)
+    );
   };
 
   const hightolow = () => {
-    let sort =
-      Allproduct.length > 0 &&
-      [...Allproduct].sort((a, b) => b.sellingPrice - a.sellingPrice);
-    setallproduct(sort);
+    setproductinfo(
+      [...productinfo].sort((a, b) => b.sellingPrice - a.sellingPrice)
+    );
   };
-
-  const [selectedOption, setSelectedOption] = useState("");
 
   const handleChange = (event) => {
     setCurrentPage(1);
     const selectedValue = event.target.value;
-    setSelectedOption(selectedValue);
 
-    // Perform actions based on the selected option
     if (selectedValue === "highToLow") {
       hightolow();
     } else if (selectedValue === "lowToHigh") {
@@ -190,7 +181,6 @@ function Heroshop() {
     const existingProduct = cart.find((item) => item.id === product.id);
 
     if (existingProduct) {
-      // If the product is already in the cart, update quantity
       updateQuantity(product.id, existingProduct.quantity + quantity);
       toast.success("Product added", {
         autoClose: 3000,
@@ -199,16 +189,26 @@ function Heroshop() {
         closeOnClick: true,
       });
     } else {
-      // If the product is not in the cart, add it
-      setcart([...cart, { ...product, quantity: 1 }]);
+      setcart([
+        ...cart,
+        { ...product, quantity: 1, smallDescription: "Cleaning method 1" },
+      ]);
       localStorage.setItem(
         "cartinfo",
-        JSON.stringify([...cart, { ...product, quantity: quantity }])
+        JSON.stringify([
+          ...cart,
+          {
+            ...product,
+            quantity: quantity,
+            smallDescription: "Cleaning method 1",
+          },
+        ])
       );
       toast.success("Product added", {
         autoClose: 3000,
         position: "top-right",
-        icon: "👏",
+        hideProgressBar: false,
+        closeOnClick: true,
       });
     }
   };
@@ -229,18 +229,18 @@ function Heroshop() {
     }
   };
 
+  const paginatedProductInfo = useMemo(() => {
+    return productinfo.slice(indexOfFirstItem, indexOfLastItem);
+  }, [productinfo, indexOfFirstItem, indexOfLastItem]);
+
   return (
     <main className="main">
-      {/* page Header */}
       <div className="page-header shop-hero cph-header pl-4 pr-4">
         <h1 className="page-title font-weight-light text-capitalize">
           Sammak Shop
         </h1>
-        {/* Category container */}
       </div>
-      {/* ends */}
 
-      {/* breadcrumps  */}
       <nav className="breadcrumb-nav has-border">
         <div className="container">
           <ul className="breadcrumb">
@@ -251,7 +251,7 @@ function Heroshop() {
           </ul>
         </div>
       </nav>
-      {/* ends */}
+
       <div className={style.dropdown}>
         <select
           className={style.select}
@@ -270,12 +270,10 @@ function Heroshop() {
         </select>
       </div>
 
-      {/* page content static container */}
       <div className="page-content mb-10 shop-page shop-horizontal">
         <div className="container">
           <CRow xs={{ cols: 1 }} className="g-4">
-            {/* Product 1 */}
-            {Allproduct.length === 0 && (
+            {productinfo.length === 0 && (
               <div className={style.beforeload}>
                 {" "}
                 <div className={style.loader_content}>
@@ -289,8 +287,8 @@ function Heroshop() {
                 </div>
               </div>
             )}
-            {Allproduct.length > 0 && Array.isArray(Allproduct) ? (
-              Allproduct.map((field, index) => (
+            {productinfo.length > 0 && Array.isArray(productinfo) ? (
+              paginatedProductInfo.map((field, index) => (
                 <CCol className="col  col-md-6 col-lg-4 col-xl-3" key={index}>
                   <CCard className="">
                     <div
@@ -358,7 +356,7 @@ function Heroshop() {
                     </CCardBody>
                   </CCard>
                 </CCol>
-              )).slice(indexOfFirstItem, indexOfLastItem)
+              ))
             ) : (
               <div className={style.loader_content}>
                 {" "}
@@ -372,7 +370,7 @@ function Heroshop() {
             )}
           </CRow>
         </div>
-        {Allproduct.length <= itemsPerPage ? (
+        {productinfo.length <= itemsPerPage ? (
           ""
         ) : (
           <div className="d-flex align-items-center justify-content-end gap-2 cuz-pag-btn mr-4">
@@ -385,7 +383,6 @@ function Heroshop() {
               Previous
             </button>
             <p className="page-value">{currentPage}</p>
-
             <button
               className="btn"
               onClick={() => {
@@ -397,7 +394,6 @@ function Heroshop() {
           </div>
         )}
       </div>
-      {/* ends */}
       <Toaster />
     </main>
   );

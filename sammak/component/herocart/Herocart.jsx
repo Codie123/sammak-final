@@ -82,86 +82,6 @@ function Herocart() {
     setid,
   } = useContext(AllContext);
   // authentication
-  const register = () => {
-    if (
-      registeruser.emailId === "" ||
-      registeruser.password === "" ||
-      registeruser.userName === ""
-    ) {
-      toast.error("Please enter all the field", {
-        autoClose: 700,
-        closeOnClick: true,
-        position: "top-right",
-      });
-      setloading(false);
-    } else {
-      axios
-        .post(`${import.meta.env.VITE_URL}/v1/auth/createUser`, registeruser)
-        .then((res) => {
-          setloading(false);
-
-          if (res.data.status === 200) {
-            toast.success("Registered successfully", {
-              position: "top-right",
-              autoClose: 400,
-              closeOnClick: true,
-            });
-            setTimeout(() => {
-              toast.info(
-                "Please click link from your email for activation and login back!",
-                {
-                  autoClose: 3000,
-                  position: "top-right",
-                }
-              );
-            }, 1000);
-          }
-        })
-        .catch((err) => {
-          setloading(false);
-        });
-    }
-  };
-
-  const login = () => {
-    if (loginuser.email === "" || loginuser.password === "") {
-      toast.error("Enter both Password and Email", {
-        autoClose: 700,
-        position: "top-right",
-        closeOnClick: true,
-      });
-      setloading(false);
-    } else {
-      axios
-        .post(`${import.meta.env.VITE_URL}/v1/auth/login`, loginuser)
-        .then((res) => {
-          setloading(false);
-          localStorage.setItem("userid", res.data.result.userId);
-          localStorage.setItem("token", res.data.result.accessToken);
-          if (res.data.result.accessToken) {
-            toast.success("Loggedin Succefully", {
-              autoClose: 1000,
-              position: "top-right",
-              closeOnClick: true,
-            });
-
-            setTimeout(() => {
-              window.location.reload();
-            }, 1000);
-          }
-        })
-        .catch((err) => {
-          setloading(false);
-          if (err) {
-            toast.error("Incorrect email or password", {
-              autoClose: 1000,
-              position: "top-right",
-              closeOnClick: true,
-            });
-          }
-        });
-    }
-  };
 
   // ends
   // configuration for api
@@ -175,46 +95,6 @@ function Herocart() {
   };
   // ends
 
-  const handleAddcart = () => {
-    if (!isloggedin) {
-      setaddCartLogin(true);
-    } else {
-      setaddCartLogin(false);
-    }
-
-    axios
-      .post(
-        `${import.meta.env.VITE_URL}/cart/addToCart/${localStorage.getItem(
-          "id"
-        )}/${localStorage.getItem("userid")}/${quantity}/${cleaning}`,
-        {},
-        config
-      )
-      .then((res) => {
-        toast.success("Added to cart", {
-          autoClose: 1000,
-          position: "top-center",
-          closeOnClick: true,
-        });
-        axios
-          .get(
-            `${
-              import.meta.env.VITE_URL
-            }/CartMaster/getAll/${localStorage.getItem("userid")}`,
-            config
-          )
-          .then((res) => {
-            localStorage.setItem(
-              "cart",
-              JSON.stringify(res.data.result.cartItemResponseList)
-            );
-            setcartdata(res.data.result.cartItemResponseList);
-          })
-          .catch((err) => {});
-      })
-      .catch((err) => {});
-  };
-
   const addquantity = () => {
     setquantity(quantity + 1);
   };
@@ -224,26 +104,6 @@ function Herocart() {
     } else {
       setquantity(quantity - 1);
     }
-  };
-
-  const handleDelete = (index, id, cartid) => {
-    let newCartdata =
-      cartdata.length > 0 &&
-      cartdata.filter((data, ind) => {
-        return ind !== index;
-      });
-    setcartdata(newCartdata);
-    axios
-      .delete(
-        `${
-          import.meta.env.VITE_URL
-        }/CartMaster/deleteByProductId/${id}/${parseInt(
-          localStorage.getItem("userid")
-        )}/${cartid}`,
-        config
-      )
-      .then((res) => {})
-      .catch((err) => {});
   };
 
   if (data) {
@@ -316,10 +176,13 @@ function Herocart() {
       });
     } else {
       // If the product is not in the cart, add it
-      setcart([...cart, { ...product, quantity: 1 }]);
+      setcart((prevCart) => [
+        ...prevCart,
+        { ...product, smallDescription: cleaning, quantity: quantity },
+      ]);
       localStorage.setItem(
         "cartinfo",
-        JSON.stringify([...cart, { ...product, quantity: quantity }])
+        JSON.stringify([...cart, { ...product, quantity: quantity,smallDescription: cleaning }])
       );
       toast.success("Product added", {
         autoClose: 3000,
