@@ -6207,16 +6207,16 @@ figure:hover .overlay-visible {
 
 .btn-dim {
   color: #fff;
-  border-color: #54524d;
-  background-color: #54524d;
+  border-color: #293241;
+  background-color: #293241;
 }
 
 .btn-dim:active,
 .btn-dim:focus,
 .btn-dim:hover {
   color: #fff;
-  border-color: #67645e;
-  background-color: #67645e;
+  border-color: #293241;
+  background-color: #293241;
 }
 
 .btn-dim.btn-solid {
@@ -6240,8 +6240,8 @@ figure:hover .overlay-visible {
 .btn-dim.btn-outline:active,
 .btn-dim.btn-outline:focus,
 .btn-dim.btn-outline:hover {
-  background-color: #54524d;
-  border-color: #54524d;
+  background-color: #293241;
+  border-color: #293241;
   color: #fff;
 }
 
@@ -11868,6 +11868,7 @@ ul.pagination {
   position: static;
   min-width: 8.4rem;
   margin-right: 1.9rem;
+  width: unset;
 }
 
 .product.product-mini .product-media img {
@@ -11876,7 +11877,7 @@ ul.pagination {
 
 .product.product-mini .product-detail a {
   white-space: normal;
-  width: 95%;
+  width: 100%;
 }
 
 .product.product-mini .product-name {

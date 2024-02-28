@@ -515,8 +515,8 @@ function Header({ homeValue, shopValue, contactValue, aboutValue }) {
                                         width="84"
                                         height="105"
                                         style={{
-                                          height: "105px",
-                                          width: "84px",
+                                          
+                                          width: "80px",
                                         }}
                                       />
                                     ) : (
@@ -534,7 +534,7 @@ function Header({ homeValue, shopValue, contactValue, aboutValue }) {
                                     <span className="sr-only"></span>
                                   </a>
                                 </figure>
-                                <div className="product-detail">
+                                <div className="product-detail d-flex flex-column">
                                   <a className="product-name">
                                     {data.productName}
                                   </a>

@@ -29,6 +29,7 @@ const Provider = ({ children }) => {
 
   useEffect(() => {
     const storedCart = JSON.parse(localStorage.getItem("cartinfo")) || [];
+
     setcart(storedCart);
   }, []);
 
