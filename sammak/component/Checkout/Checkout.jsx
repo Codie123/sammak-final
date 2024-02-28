@@ -17,6 +17,21 @@ function Checkout() {
     password: "",
     userName: "",
   });
+  const {
+    loggedin,
+    setloggedin,
+    home,
+    sethome,
+    shop,
+    setshop,
+    about,
+    setabout,
+    contact,
+    setcontact,
+    cart,
+    id,
+    productinfo,
+  } = useContext(AllContext);
   const [cartdata, setcartdata] = useState("");
   const [cod, setcod] = useState(false);
   const [total, settotal] = useState("");
@@ -40,35 +55,25 @@ function Checkout() {
     }
   }, []);
 
-  const cartid = localStorage.getItem("cart");
+  const cartinfo = JSON.parse(localStorage.getItem("cartinfo"));
   const userid = localStorage.getItem("userid");
-  const parseCartid = JSON.parse(cartid);
+
   const parseUserid = JSON.parse(userid);
 
-  let cardidparse =
-    parseCartid &&
-    parseCartid.length > 0 &&
-    parseCartid
-      .map((id) => {
-        return id.cartId;
-      })
-      .join(",");
-
-  let totalcart =
-    parseCartid &&
-    parseCartid.length > 0 &&
-    parseCartid
-      .reduce((acc, curr) => {
-        return acc + curr.subtotal;
-      }, 0)
-      .toFixed(2);
+  let totalamount =
+    cartinfo &&
+    cartinfo.length > 0 &&
+    cartinfo.reduce((acc, curr) => {
+      return acc + curr.quantity * curr.sellingPrice;
+    }, 0);
+  console.log(totalamount);
 
   const [paytabinfo, setpaytabinfo] = useState({
     callback: "String",
-    cart_amount: `${totalcart}`,
+    cart_amount: `${totalamount}`,
     cart_currency: "SAR",
     cart_description: "Fish",
-    cart_id: `${cardidparse}`,
+    cart_id: "12",
     customer_details: {
       city: "",
       country: "",
@@ -106,22 +111,6 @@ function Checkout() {
       setdata(filterproduct);
     }
   }, []);
-
-  const {
-    loggedin,
-    setloggedin,
-    home,
-    sethome,
-    shop,
-    setshop,
-    about,
-    setabout,
-    contact,
-    setcontact,
-    cart,
-    id,
-    productinfo,
-  } = useContext(AllContext);
 
   const login = () => {
     axios
@@ -206,24 +195,6 @@ function Checkout() {
         });
     }
   };
-
-  useEffect(() => {
-    axios
-      .get(
-        `${import.meta.env.VITE_URL}/CartMaster/getAll/${localStorage.getItem(
-          "userid"
-        )}`,
-        config
-      )
-      .then((res) => {
-        localStorage.setItem(
-          "cart",
-          JSON.stringify(res.data.result.cartItemResponseList)
-        );
-        setcartdata(res.data.result.cartItemResponseList);
-      })
-      .catch((err) => {});
-  }, []);
 
   useEffect(() => {
     if (!loggedin) {
@@ -520,17 +491,17 @@ function Checkout() {
                           </tr>
                         </thead>
                         <tbody>
-                          {cartdata.length > 0 &&
-                            cartdata.map((cart, index) => (
+                          {cart.length > 0 &&
+                            cart.map((cart, index) => (
                               <tr key={index}>
                                 <td className="product-name">
-                                  {cart.productResponse.productName}
+                                  {cart.productName}
                                   <span className="product-quantity">
                                     ×&nbsp;{cart.quantity}
                                   </span>
                                 </td>
                                 <td className="product-total text-body">
-                                  {cart.subtotal} SAR
+                                  {cart.quantity * cart.sellingPrice} SAR
                                 </td>
                               </tr>
                             ))}
@@ -540,14 +511,7 @@ function Checkout() {
                               <h4 className="summary-subtitle">Total</h4>
                             </td>
                             <td className="summary-total-price ls-s">
-                              {cartdata.length > 0 &&
-                                cartdata
-                                  .reduce((acc, curr) => {
-                                    let data = curr.subtotal;
-                                    return acc + data;
-                                  }, 0)
-                                  .toFixed(2)}{" "}
-                              SAR
+                              {totalamount} SAR
                             </td>
                           </tr>
                         </tbody>

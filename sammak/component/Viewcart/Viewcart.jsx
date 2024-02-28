@@ -126,8 +126,9 @@ function Viewcart() {
   const handlecheckout = () => {
     if (!loggedin) {
       setviewcart(true);
+    } else {
+      navigate("/checkout");
     }
-
   };
 
   const removeFromCart = (productId) => {
