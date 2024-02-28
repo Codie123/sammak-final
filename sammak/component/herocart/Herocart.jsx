@@ -4,7 +4,7 @@ import Header from "../Header";
 import Footer from "../Footer";
 import AllContext from "../../src/Context/Context";
 import { useNavigate } from "react-router-dom";
-import toast, { Toaster } from "react-hot-toast";
+import {toast, Toaster } from "react-hot-toast";
 import axios from "axios";
 import Loader from "react-js-loader";
 
@@ -212,6 +212,7 @@ function Herocart() {
     setcart((prevCart) => prevCart.filter((item) => item.id !== productId));
   };
 
+  
   return (
     <>
       <Header
@@ -373,6 +374,10 @@ function Herocart() {
                 modules={[Virtual, Navigation, Pagination]}
                 slidesPerView={3}
                 breakpoints={{
+                  300:{
+                    slidesPerView: 1,
+                    spaceBetween: 10,
+                  },
                   640: {
                     slidesPerView: 2,
                     spaceBetween: 20,
@@ -393,7 +398,7 @@ function Herocart() {
                   Allproduct.map((field, index) => (
                     <SwiperSlide key={field} virtualIndex={index}>
                       <div
-                        className="product-wrap shop-home col "
+                        className="product-wrap shop-home col"
                         style={{
                           display: "flex",
                           flexDirection: "column",

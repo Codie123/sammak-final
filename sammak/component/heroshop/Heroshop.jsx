@@ -50,7 +50,7 @@ function Heroshop() {
     setsearch,
     setcartdata,
   } = useContext(AllContext);
-
+console.log(cart)
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
 
