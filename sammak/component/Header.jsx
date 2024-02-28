@@ -9,6 +9,7 @@ import { useContext } from "react";
 import AllContext from "../src/Context/Context";
 import Herocart from "./herocart/Herocart";
 import { ToastContainer, toast } from "react-toastify";
+import toast1, { Toaster } from "react-hot-toast";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 import Loader from "react-js-loader";
@@ -140,24 +141,6 @@ function Header({ homeValue, shopValue, contactValue, aboutValue }) {
     },
   };
 
-  // useEffect(() => {
-  //   axios
-  //     .get(
-  //       `${import.meta.env.VITE_URL}/CartMaster/getAll/${localStorage.getItem(
-  //         "userid"
-  //       )}`,
-  //       config
-  //     )
-  //     .then((res) => {
-  //       localStorage.setItem(
-  //         "cart",
-  //         JSON.stringify(res.data.result.cartItemResponseList)
-  //       );
-  //       setcartdata(res.data.result.cartItemResponseList);
-  //     })
-  //     .catch((err) => {});
-  // }, []);
-
   function isTokenExpired(token) {
     const expiration = new Date(token.exp * 1000);
     return Date.now() >= expiration;
@@ -186,26 +169,6 @@ function Header({ homeValue, shopValue, contactValue, aboutValue }) {
       }
     }
   }, []);
-
-  const handleDelete = (index, id, cartid) => {
-    let newCartdata =
-      cartdata.length > 0 &&
-      cartdata.filter((data, ind) => {
-        return ind !== index;
-      });
-    setcartdata(newCartdata);
-    axios
-      .delete(
-        `${
-          import.meta.env.VITE_URL
-        }/CartMaster/deleteByProductId/${id}/${parseInt(
-          localStorage.getItem("userid")
-        )}/${cartid}`,
-        config
-      )
-      .then((res) => {})
-      .catch((err) => {});
-  };
 
   if (localStorage.getItem("orders")) {
     let orders = JSON.parse(localStorage.getItem("orders"));
@@ -237,6 +200,19 @@ function Header({ homeValue, shopValue, contactValue, aboutValue }) {
       let newcart = cart.filter((item) => item.id !== productId);
       setcart(newcart);
       localStorage.setItem("cartinfo", JSON.stringify(newcart));
+    }
+  };
+
+  const handlecheckout = () => {
+    if (!loggedin) {
+      toast1.error("Please Login to checkout", {
+        autoClose: 3000,
+        position: "top-right",
+        hideProgressBar: false,
+        closeOnClick: true,
+      });
+    } else {
+      navigate("/checkout");
     }
   };
 
@@ -503,6 +479,7 @@ function Header({ homeValue, shopValue, contactValue, aboutValue }) {
                       <div className="dropdown-box">
                         <div className="canvas-header">
                           <h4 className="canvas-title">Shopping Cart</h4>
+                          <Toaster />
                           <a
                             href="#"
                             className="btn btn-dark btn-link btn-close"
@@ -525,7 +502,6 @@ function Header({ homeValue, shopValue, contactValue, aboutValue }) {
                                         width="84"
                                         height="105"
                                         style={{
-                                          
                                           width: "80px",
                                         }}
                                       />
@@ -600,7 +576,12 @@ function Header({ homeValue, shopValue, contactValue, aboutValue }) {
                           >
                             View Cart
                           </a>
-                          <a href="/checkout" className="btn btn-dim">
+                          <a
+                            onClick={() => {
+                              handlecheckout();
+                            }}
+                            className="btn btn-dim"
+                          >
                             <span>Go To Checkout</span>
                           </a>
                         </div>
