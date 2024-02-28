@@ -18,7 +18,7 @@ const Provider = ({ children }) => {
   const [search, setsearch] = useState("");
   const [loginopen, setloginopen] = useState(false);
   const [data1, setdata1] = useState("");
-
+  const [viewcart, setviewcart] = useState(false);
 
   useEffect(() => {
     const storedCart = JSON.parse(localStorage.getItem("cartinfo")) || [];
@@ -77,6 +77,8 @@ const Provider = ({ children }) => {
     data1,
     cartdata,
     setcartdata,
+    viewcart,
+    setviewcart,
   };
   return (
     <AllContext.Provider value={valuetoshare}>{children}</AllContext.Provider>
