@@ -479,7 +479,7 @@ function Header({ homeValue, shopValue, contactValue, aboutValue }) {
                       <div className="dropdown-box">
                         <div className="canvas-header">
                           <h4 className="canvas-title">Shopping Cart</h4>
-                          <Toaster />
+                       
                           <a
                             href="#"
                             className="btn btn-dark btn-link btn-close"
