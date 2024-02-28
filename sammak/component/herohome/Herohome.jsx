@@ -20,6 +20,7 @@ function Herohome() {
     setproductinfo,
     data1,
     setdata1,
+    setheroSliderData,
   } = useContext(AllContext);
   const navigate = useNavigate();
   useEffect(() => {
@@ -38,6 +39,15 @@ function Herohome() {
   let recentItems = localStorage.getItem("recentItems")
     ? JSON.parse(localStorage.getItem("recentItems"))
     : null;
+
+  useEffect(() => {
+    axios
+      .get(`${import.meta.env.VITE_URL}/HeroSlider/getAll`)
+      .then((res) => {
+        setheroSliderData(res.data.result);
+      })
+      .catch((err) => {});
+  }, []);
 
   return (
     <>

@@ -59,6 +59,8 @@ function Viewcart() {
     cart,
     id,
     productinfo,
+    viewcart,
+    setviewcart,
   } = useContext(AllContext);
 
   //
@@ -72,6 +74,7 @@ function Viewcart() {
     ];
     return acc.concat(data);
   }, []);
+  console.log(cartmin);
 
   //
 
@@ -114,29 +117,17 @@ function Viewcart() {
     }
   };
 
-  // get items for the cart
-
+  const config = {
+    headers: {
+      Accept: "application/json",
+      Authorization: `Bearer ` + localStorage.getItem("token"),
+    },
+  };
   const handlecheckout = () => {
-    axios
-      .post(
-        `${import.meta.env.VITE_URL}/cart/addListToCart`,
-        contactData,
-        config
-      )
-      .then((res) => {
-        if (res.data.status === 200) {
-          toast.success("Comment Sent Successfully ", {
-            autoClose: 2000,
-            position: "top-center",
-          });
-          setTimeout(() => {
-            window.location.reload();
-          }, 2000);
-        }
-      })
-      .catch((err) => {});
+    if (!loggedin) {
+      setviewcart(true);
+    }
 
-    navigate("/checkout");
   };
 
   const removeFromCart = (productId) => {

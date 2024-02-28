@@ -38,21 +38,6 @@ function Checkout() {
     if (!loggedin) {
       navigate("/");
     }
-    axios
-      .get(
-        `${import.meta.env.VITE_URL}/CartMaster/getAll/${localStorage.getItem(
-          "userid"
-        )}`,
-        config
-      )
-      .then((res) => {
-        localStorage.setItem(
-          "cart",
-          JSON.stringify(res.data.result.cartItemResponseList)
-        );
-        setcartdata(res.data.result.cartItemResponseList);
-      })
-      .catch((err) => {});
   }, []);
 
   const cartid = localStorage.getItem("cart");
@@ -138,13 +123,6 @@ function Checkout() {
     productinfo,
   } = useContext(AllContext);
 
-  const register = () => {
-    axios
-      .post(`${import.meta.env.VITE_URL}/v1/auth/createUser`, registeruser)
-      .then((res) => {})
-      .catch((err) => {});
-  };
-
   const login = () => {
     axios
       .post(`${import.meta.env.VITE_URL}/v1/auth/login`, loginuser)
@@ -165,6 +143,17 @@ function Checkout() {
   }, []);
 
   const token = localStorage.getItem("token");
+
+  let cartmin = cart.reduce((acc, curr) => {
+    let data = [
+      {
+        cleaningType: curr.smallDescription,
+        id: curr.id,
+        quantity: curr.quantity,
+      },
+    ];
+    return acc.concat(data);
+  }, []);
   const config = {
     headers: {
       Accept: "application/json",
@@ -183,9 +172,6 @@ function Checkout() {
         position: "top-center",
         closeOnClick: true,
       });
-      setTimeout(() => {
-        setloading(false);
-      }, 700);
     } else {
       axios
         .post(
@@ -196,8 +182,20 @@ function Checkout() {
           config
         )
         .then((res) => {
-          setloading(false);
-          handlepaytabs();
+          axios
+            .post(
+              `${
+                import.meta.env.VITE_URL
+              }/cart/addListToCart?userId=${localStorage.getItem("userid")}`,
+              cartmin,
+              config
+            )
+            .then((res) => {
+              handlepaytabs();
+            })
+            .catch((err) => {
+              console.log(err);
+            });
         })
         .catch((err) => {
           toast.error("Oops! Something went wrong", {
@@ -227,39 +225,17 @@ function Checkout() {
       .catch((err) => {});
   }, []);
 
-  const handleDelete = (index, id) => {
-    let newCartdata =
-      cartdata.length > 0 &&
-      cartdata.filter((data, ind) => {
-        return ind !== index;
-      });
-    setcartdata(newCartdata);
-    axios
-      .delete(
-        `${
-          import.meta.env.VITE_URL
-        }/CartMaster/deleteByProductId/${id}/${parseInt(
-          localStorage.getItem("userid")
-        )}`,
-        config
-      )
-      .then((res) => {})
-      .catch((err) => {});
-  };
   useEffect(() => {
     if (!loggedin) {
       navigate("/");
     }
   }, []);
-  const headers = {
-    "content-type": "application/json",
-    Authorization: "SHJN6KTM9G-J6W6WR6GTN-G2RMKNRWKK",
-  };
 
   const handlepaytabs = () => {
     axios
       .post(`${import.meta.env.VITE_URL}/checkOut/fromCart`, paytabinfo, config)
       .then((response) => {
+        setloading(false);
         if (cod) {
           navigate("/ordercomplete");
         } else {

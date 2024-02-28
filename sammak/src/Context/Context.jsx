@@ -18,14 +18,7 @@ const Provider = ({ children }) => {
   const [search, setsearch] = useState("");
   const [loginopen, setloginopen] = useState(false);
   const [data1, setdata1] = useState("");
-  useEffect(() => {
-    axios
-      .get(`${import.meta.env.VITE_URL}/HeroSlider/getAll`)
-      .then((res) => {
-        setheroSliderData(res.data.result);
-      })
-      .catch((err) => {});
-  }, []);
+
 
   useEffect(() => {
     const storedCart = JSON.parse(localStorage.getItem("cartinfo")) || [];
@@ -40,21 +33,6 @@ const Provider = ({ children }) => {
   };
 
   useEffect(() => {
-    axios
-      .get(
-        `${import.meta.env.VITE_URL}/CartMaster/getAll/${localStorage.getItem(
-          "userid"
-        )}`,
-        config
-      )
-      .then((res) => {
-        localStorage.setItem(
-          "cart",
-          JSON.stringify(res.data.result.cartItemResponseList)
-        );
-        setcartdata(res.data.result.cartItemResponseList);
-      })
-      .catch((err) => {});
     //orderapi
     axios
       .get(
