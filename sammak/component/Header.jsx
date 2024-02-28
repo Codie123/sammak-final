@@ -43,6 +43,8 @@ function Header({ homeValue, shopValue, contactValue, aboutValue }) {
     setsearch,
     loginopen,
     setloginopen,
+    viewcart,
+    setviewcart,
   } = useContext(AllContext);
   sethome(homeValue);
   setshop(shopValue);
@@ -365,7 +367,13 @@ function Header({ homeValue, shopValue, contactValue, aboutValue }) {
               </nav>
             </div>
             <div className="header-right">
-              <div className="dropdown login-dropdown off-canvas">
+              <div
+                className={
+                  viewcart
+                    ? "dropdown login-dropdown opened off-canvas"
+                    : "dropdown login-dropdown off-canvas"
+                }
+              >
                 {loggedin ? (
                   <>
                     <div className="d-flex">
@@ -422,10 +430,7 @@ function Header({ homeValue, shopValue, contactValue, aboutValue }) {
                       }}
                     >
                       {" "}
-                      <a
-                        className="login-toggle opened"
-                        data-toggle="login-modal"
-                      >
+                      <a className="login-toggle " data-toggle="login-modal">
                         {/* <a className="lg-btn" >Login</a>
 
                         <a className="lg-btn" >Sign Up</a> */}
@@ -488,7 +493,12 @@ function Header({ homeValue, shopValue, contactValue, aboutValue }) {
                         <span className="cart-count">{cart.length}</span>
                       </a>
 
-                      <div className="canvas-overlay"></div>
+                      <div
+                        className="canvas-overlay"
+                        onClick={() => {
+                          setviewcart(false);
+                        }}
+                      ></div>
 
                       <div className="dropdown-box">
                         <div className="canvas-header">
@@ -497,7 +507,7 @@ function Header({ homeValue, shopValue, contactValue, aboutValue }) {
                             href="#"
                             className="btn btn-dark btn-link btn-close"
                           >
-                            close<i className="p-icon-arrow-long-right"></i>
+                            <i className="p-icon-arrow-long-right"></i>
                             <span className="sr-only">Cart</span>
                           </a>
                         </div>
@@ -600,7 +610,12 @@ function Header({ homeValue, shopValue, contactValue, aboutValue }) {
                 )}
 
                 <div className="canvas-overlay"></div>
-                <a className="btn-close"></a>
+                <a
+                  className="btn-close"
+                  onClick={() => {
+                    setviewcart(false);
+                  }}
+                ></a>
                 <div className="dropdown-box scrollable">
                   <div className="login-popup">
                     <div className="form-box">
