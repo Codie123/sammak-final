@@ -16,7 +16,6 @@ import Loader from "react-js-loader";
 import { RotatingLines } from "react-loader-spinner";
 import { jwtDecode } from "jwt-decode";
 function Header({ homeValue, shopValue, contactValue, aboutValue }) {
-  
   const [loginuser, setloginuser] = useState({ email: "", password: "" });
   const [registeruser, setregisteruser] = useState({
     emailId: "",
@@ -358,7 +357,6 @@ function Header({ homeValue, shopValue, contactValue, aboutValue }) {
                         className="log-out"
                         onClick={() => {
                           navigate("/setting");
-                          window.location.reload();
                         }}
                       >
                         <svg
@@ -400,10 +398,16 @@ function Header({ homeValue, shopValue, contactValue, aboutValue }) {
                   </>
                 ) : (
                   <div className="d-flex">
-                    <button >
+                    <button
+                      style={{
+                        position: "relative",
+                        left: "-1vh",
+                        cursor: "pointer",
+                      }}
+                    >
+                      {" "}
                       <a className="login-toggle " data-toggle="login-modal">
-
-                       <span>Login/Signup</span>
+                        <span>Login/Signup</span>
                         <svg
                           width="23"
                           height="23"
@@ -473,7 +477,7 @@ function Header({ homeValue, shopValue, contactValue, aboutValue }) {
                       <div className="dropdown-box">
                         <div className="canvas-header">
                           <h4 className="canvas-title">Shopping Cart</h4>
-                       
+
                           <a
                             href="#"
                             className="btn btn-dark btn-link btn-close"
@@ -570,21 +574,31 @@ function Header({ homeValue, shopValue, contactValue, aboutValue }) {
                           >
                             View Cart
                           </a>
-                          <a
-                            onClick={() => {
-                              handlecheckout();
-                            }}
-                            className="btn btn-dim"
-                          >
-                            <span>Go To Checkout</span>
-                          </a>
+
+                          {loggedin ? (
+                            <a
+                              onClick={() => {
+                                handlecheckout();
+                              }}
+                              className="btn btn-dim"
+                            >
+                              <span>Go To Checkout</span>
+                            </a>
+                          ) : (
+                            ""
+                          )}
                         </div>
                       </div>
                     </div>
                   </div>
                 )}
 
-                <div className="canvas-overlay"></div>
+                <div
+                  className="canvas-overlay"
+                  onClick={() => {
+                    setviewcart(false);
+                  }}
+                ></div>
                 <a
                   className="btn-close"
                   onClick={() => {
@@ -927,9 +941,13 @@ function Header({ homeValue, shopValue, contactValue, aboutValue }) {
                       >
                         View Cart
                       </a>
-                      <a href="/checkout" className="btn btn-dim">
-                        <span>Go To Checkout</span>
-                      </a>
+                      {loggedin ? (
+                        <a href="/checkout" className="btn btn-dim">
+                          <span>Go To Checkout</span>
+                        </a>
+                      ) : (
+                        ""
+                      )}
                     </div>
                   </div>
                 </div>
