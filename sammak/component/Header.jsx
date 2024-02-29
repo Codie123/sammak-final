@@ -357,6 +357,7 @@ function Header({ homeValue, shopValue, contactValue, aboutValue }) {
                         className="log-out"
                         onClick={() => {
                           navigate("/setting");
+                          window.location.reload();
                         }}
                       >
                         <svg
