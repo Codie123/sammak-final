@@ -570,14 +570,15 @@ function Header({ homeValue, shopValue, contactValue, aboutValue }) {
                           >
                             View Cart
                           </a>
-                          <a
+                            {loggedin?<a
                             onClick={() => {
                               handlecheckout();
                             }}
                             className="btn btn-dim"
                           >
                             <span>Go To Checkout</span>
-                          </a>
+                          </a>:" "}
+                          
                         </div>
                       </div>
                     </div>
@@ -591,6 +592,7 @@ function Header({ homeValue, shopValue, contactValue, aboutValue }) {
                     setviewcart(false);
                   }}
                 ></a>
+
                 <div className="dropdown-box scrollable">
                   <div className="login-popup">
                     <div className="form-box">
@@ -614,7 +616,9 @@ function Header({ homeValue, shopValue, contactValue, aboutValue }) {
                           </li>
                         </ul>
                         <div className="tab-content">
+
                           <ToastContainer />
+
                           <div className="tab-pane active" id="signin">
                             <form
                               onSubmit={(e) => {
@@ -786,6 +790,7 @@ function Header({ homeValue, shopValue, contactValue, aboutValue }) {
                               </button>
                             </form>
                           </div>
+
                         </div>
                       </div>
                     </div>
@@ -927,9 +932,14 @@ function Header({ homeValue, shopValue, contactValue, aboutValue }) {
                       >
                         View Cart
                       </a>
-                      <a href="/checkout" className="btn btn-dim">
+
+                        {loggedin?<a href="/checkout" className="btn btn-dim">
                         <span>Go To Checkout</span>
-                      </a>
+                      </a>:" "}
+                               
+                      
+            
+                      
                     </div>
                   </div>
                 </div>
