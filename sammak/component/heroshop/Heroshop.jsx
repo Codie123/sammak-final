@@ -241,34 +241,40 @@ console.log(cart)
         </h1>
       </div>
 
-      <nav className="breadcrumb-nav has-border">
-        <div className="container">
+      <nav className="breadcrumb-nav has-border mt-4 mb-4">
+
+        <div className="container d-flex justify-content-between align-items-center">
+
           <ul className="breadcrumb">
             <li>
               <a href="/">Home</a>
             </li>
             <li>Shop</li>
           </ul>
+
+          <div className="toolbox-item toolbox-sort select-menu m-0 ">
+            <select
+              className={style.select}
+              value={selectedOption}
+              onChange={handleChange}
+            >
+              <option value="" disabled>
+                Sort by
+              </option>
+              <option className={style.option} value="highToLow">
+                High to Low
+              </option>
+              <option className={style.option} value="lowToHigh">
+                Low to High
+              </option>
+            </select>
+          </div>
+
         </div>
+
       </nav>
 
-      <div className={style.dropdown}>
-        <select
-          className={style.select}
-          value={selectedOption}
-          onChange={handleChange}
-        >
-          <option value="" disabled>
-            Sort by
-          </option>
-          <option className={style.option} value="highToLow">
-            High to Low
-          </option>
-          <option className={style.option} value="lowToHigh">
-            Low to High
-          </option>
-        </select>
-      </div>
+    
 
       <div className="page-content mb-10 shop-page shop-horizontal">
         <div className="container">

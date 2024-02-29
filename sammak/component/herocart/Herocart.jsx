@@ -257,7 +257,7 @@ function Herocart() {
                             src={data1.imageUrl}
                             data-zoom-image={data1.imageUrl}
                             alt="1"
-                            style={{ width: 800, height: 600 }}
+                            style={{ width: 800 }}
                           />
                         </SwiperSlide>
                       );

@@ -16,6 +16,7 @@ import Loader from "react-js-loader";
 import { RotatingLines } from "react-loader-spinner";
 import { jwtDecode } from "jwt-decode";
 function Header({ homeValue, shopValue, contactValue, aboutValue }) {
+  
   const [loginuser, setloginuser] = useState({ email: "", password: "" });
   const [registeruser, setregisteruser] = useState({
     emailId: "",
@@ -398,18 +399,10 @@ function Header({ homeValue, shopValue, contactValue, aboutValue }) {
                   </>
                 ) : (
                   <div className="d-flex">
-                    <button
-                      style={{
-                        position: "relative",
-                        left: "-1vh",
-                        cursor: "pointer",
-                      }}
-                    >
-                      {" "}
+                    <button >
                       <a className="login-toggle " data-toggle="login-modal">
-                        {/* <a className="lg-btn" >Login</a>
 
-                        <a className="lg-btn" >Sign Up</a> */}
+                       <span>Login/Signup</span>
                         <svg
                           width="23"
                           height="23"

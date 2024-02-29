@@ -2840,7 +2840,7 @@ window.Panda = {};
           $(".login-dropdown").addClass("opened");
           Panda.$body.addClass("offcanvas-active");
         })
-        
+
         .on("click", ".off-canvas .btn-close", function (e) {
           $(".login-dropdown").removeClass("opened");
           Panda.$body.removeClass("offcanvas-active");
