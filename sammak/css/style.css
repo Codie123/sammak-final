@@ -11282,6 +11282,11 @@ ul.pagination {
   display: block;
   width: 15%;
 }
+@media(max-width:500px){
+  .logo img{
+    width: 40%;
+  }
+}
 
 .header-bottom {
   border-bottom: 1px solid #e0dede;
