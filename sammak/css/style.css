@@ -1105,7 +1105,7 @@ blockquote {
 .container-fluid {
   width: 100%;
   padding-left: 20px;
-
+  padding-right: 20px;
   margin-left: auto;
   margin-right: auto;
 }
@@ -4391,6 +4391,7 @@ select {
   right: 2rem;
   top: 50%;
   transform: translateY(-50%);
+  z-index: 10;
 }
 
 @font-face {
@@ -11221,8 +11222,9 @@ ul.pagination {
 }
 
 .header-middle {
-  padding-top: 2.9rem;
-  padding-bottom: 2.7rem;
+  /* padding-top: 2.9rem;
+  padding-bottom: 2.7rem; */
+  padding: 1rem 0;
   color: #222;
   font-size: 0.875em;
 }
@@ -11232,7 +11234,12 @@ ul.pagination {
 }
 
 .header-middle .login-toggle {
-  margin: 0.2rem 1.9rem 0 0;
+  /* margin: 0.2rem 1.9rem 0 0; */
+  cursor: pointer;
+  margin-right: 1rem;
+}
+.header-middle .login-toggle span{
+  margin-right: 1rem;
 }
 
 .header-middle .login-toggle i {
