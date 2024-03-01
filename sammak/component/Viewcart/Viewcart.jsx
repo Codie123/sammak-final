@@ -264,7 +264,7 @@ function Viewcart() {
                     </tbody>
                   </table>
                   <div className="cart-actions mb-6 pt-6">
-                    <a className="btn btn-dim btn-icon-left mr-4 mb-4">
+                    <a href="/shopview" className="btn btn-dim btn-icon-left mr-4 mb-4">
                       <i className="p-icon-arrow-long-left"></i>Continue
                       Shopping
                     </a>
